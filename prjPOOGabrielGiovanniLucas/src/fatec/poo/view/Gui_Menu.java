@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fatec.poo.model.view;
+package fatec.poo.view;
 
 /**
  *
@@ -56,6 +56,11 @@ public class Gui_Menu extends javax.swing.JFrame {
         jMenuCadastros.add(jMenuItemTurma);
 
         jMenuItemInstrutor.setText("Instrutor");
+        jMenuItemInstrutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemInstrutorActionPerformed(evt);
+            }
+        });
         jMenuCadastros.add(jMenuItemInstrutor);
 
         jMenuItemAluno.setText("Aluno");
@@ -123,6 +128,10 @@ public class Gui_Menu extends javax.swing.JFrame {
     private void jMenuItemAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlunoActionPerformed
         new Gui_Aluno().setVisible(true);
     }//GEN-LAST:event_jMenuItemAlunoActionPerformed
+
+    private void jMenuItemInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInstrutorActionPerformed
+        new Gui_Instrutor().setVisible(true);
+    }//GEN-LAST:event_jMenuItemInstrutorActionPerformed
 
     /**
      * @param args the command line arguments
