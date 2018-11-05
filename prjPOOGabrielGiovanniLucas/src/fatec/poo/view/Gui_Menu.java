@@ -53,6 +53,11 @@ public class Gui_Menu extends javax.swing.JFrame {
         jMenuCadastros.add(jMenuItemCurso);
 
         jMenuItemTurma.setText("Turma");
+        jMenuItemTurma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemTurmaActionPerformed(evt);
+            }
+        });
         jMenuCadastros.add(jMenuItemTurma);
 
         jMenuItemInstrutor.setText("Instrutor");
@@ -114,12 +119,8 @@ public class Gui_Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCursoActionPerformed
-         // TODO add your handling code here:
+         new Gui_Curso().setVisible(true);
     }//GEN-LAST:event_jMenuItemCursoActionPerformed
-
-    private void jMenuItemAlocarInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlocarInstrutorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemAlocarInstrutorActionPerformed
 
     private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
         dispose();
@@ -132,7 +133,10 @@ public class Gui_Menu extends javax.swing.JFrame {
     private void jMenuItemInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInstrutorActionPerformed
         new Gui_Instrutor().setVisible(true);
     }//GEN-LAST:event_jMenuItemInstrutorActionPerformed
-
+  
+    private void jMenuItemTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTurmaActionPerformed
+        new Gui_Turma().setVisible(true);
+    }//GEN-LAST:event_jMenuItemTurmaActionPerformed
     /**
      * @param args the command line arguments
      */
