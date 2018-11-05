@@ -21,6 +21,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Turma"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemTurmaActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemInstrutor">
               <Properties>
@@ -59,9 +62,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Alocar Instrutor"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAlocarInstrutorActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemEfetuarMatricula">
               <Properties>
