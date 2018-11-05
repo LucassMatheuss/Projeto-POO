@@ -90,6 +90,11 @@ public class Gui_Menu extends javax.swing.JFrame {
         jMenuOperacoes.setText("Operações");
 
         jMenuItemAlocarInstrutor.setText("Alocar Instrutor");
+        jMenuItemAlocarInstrutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAlocarInstrutorActionPerformed(evt);
+            }
+        });
         jMenuOperacoes.add(jMenuItemAlocarInstrutor);
 
         jMenuItemEfetuarMatricula.setText("Efetuar Matricula");
@@ -128,11 +133,10 @@ public class Gui_Menu extends javax.swing.JFrame {
     private void jMenuItemInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInstrutorActionPerformed
         new Gui_Instrutor().setVisible(true);
     }//GEN-LAST:event_jMenuItemInstrutorActionPerformed
-
+  
     private void jMenuItemTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTurmaActionPerformed
         new Gui_Turma().setVisible(true);
     }//GEN-LAST:event_jMenuItemTurmaActionPerformed
-
     /**
      * @param args the command line arguments
      */
