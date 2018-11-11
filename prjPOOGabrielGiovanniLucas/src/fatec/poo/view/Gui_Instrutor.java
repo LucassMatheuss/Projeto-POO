@@ -5,6 +5,10 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoInstrutor;
+import fatec.poo.model.Instrutor;
+
 /**
  *
  * @author Giovanni
@@ -69,6 +73,11 @@ public class Gui_Instrutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Instrutor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("CPF");
 
@@ -325,6 +334,13 @@ public class Gui_Instrutor extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        /*Conexao conexao = new Conexao("ZickkyG","Gigio2025");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@localhost:1521:xe");
+        DaoInstrutor di = new DaoInstrutor(conexao.criarConexao());*/
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
