@@ -1,12 +1,12 @@
 package fatec.poo.control;
 
-import fatec.poo.model.Aluno;
-import fatec.poo.model.Instrutor;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import fatec.poo.model.Pessoa;
+import fatec.poo.model.Aluno;
+import fatec.poo.model.Instrutor;
 /**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
@@ -21,7 +21,7 @@ public class DaoPessoa {
     public void inserir (Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO Pessoa (nome, dataNasc, endereco, bairro, cidade, estado, " +
+            ps = connection.prepareStatement("INSERT INTO poo_Pessoa (nome, dataNasc, endereco, bairro, cidade, estado, " +
                     "cep, telefone, celular, sexo, estadoCivil, rg, cpf, email, numero) " +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, pessoa.getNome());
@@ -48,7 +48,7 @@ public class DaoPessoa {
     public void alterar(Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("UPDATE Pessoa SET nome = ?, dataNasc = ?, endereco = ?, bairro = ?, " +
+            ps = connection.prepareStatement("UPDATE poo_Pessoa SET nome = ?, dataNasc = ?, endereco = ?, bairro = ?, " +
                     "cidade = ?, estado = ?, cep = ?, telefone = ?, celular = ?, sexo = ?, estadoCivil = ?, rg = ?, " +
                     "email = ?, numero = ? WHERE cpf = ?"); 
             ps.setString(1, pessoa.getNome());
@@ -72,11 +72,11 @@ public class DaoPessoa {
         }
     }
     
-    public Pessoa carregar (String cpf, String tipo){
+    public Pessoa consultar (String cpf, String tipo){
         Pessoa pessoa = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT * FROM Pessoa WHERE cpf = ?");
+            ps = connection.prepareStatement("SELECT * FROM poo_Pessoa WHERE cpf = ?");
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -108,7 +108,7 @@ public class DaoPessoa {
     public void excluir(Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("DELETE FROM Pessoa WHERE cpf = ?");
+            ps = connection.prepareStatement("DELETE FROM poo_Pessoa WHERE cpf = ?");
             ps.setString(1, pessoa.getCpf());
             ps.execute();
         } catch (SQLException ex) { 

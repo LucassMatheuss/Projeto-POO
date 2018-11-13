@@ -23,7 +23,7 @@ public class DaoInstrutor {
         PreparedStatement ps = null;
         try {
             dp.inserir((Pessoa)Instrutor);
-            ps = connection.prepareStatement("INSERT INTO Instrutor (cpf, formacao, areaAtuacao) " +
+            ps = connection.prepareStatement("INSERT INTO poo_Instrutor (cpf, formacao, areaAtuacao) " +
                     "VALUES(?, ?, ?)");
             ps.setString(1, Instrutor.getCpf());
             ps.setString(2, Instrutor.getFormacao());
@@ -38,7 +38,7 @@ public class DaoInstrutor {
         PreparedStatement ps = null;
         try {
             dp.alterar(Instrutor);
-            ps = connection.prepareStatement("UPDATE Instrutor SET formacao = ?, areaAtuacao = ? WHERE cpf = ?"); 
+            ps = connection.prepareStatement("UPDATE poo_Instrutor SET formacao = ?, areaAtuacao = ? WHERE cpf = ?"); 
             ps.setString(1, Instrutor.getFormacao());
             ps.setString(2, Instrutor.getAreaAtuacao());
             ps.setString(3, Instrutor.getCpf());
@@ -48,12 +48,12 @@ public class DaoInstrutor {
         }
     }
     
-    public Instrutor carregar (String cpf){
+    public Instrutor consultar (String cpf){
         Instrutor Instrutor = null;
         PreparedStatement ps = null;
         try {
-            Instrutor = (Instrutor)dp.carregar(cpf, "Instrutor");
-            ps = connection.prepareStatement("SELECT * FROM Instrutor WHERE cpf = ?");
+            Instrutor = (Instrutor)dp.consultar(cpf, "Instrutor");
+            ps = connection.prepareStatement("SELECT * FROM poo_Instrutor WHERE cpf = ?");
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -71,7 +71,7 @@ public class DaoInstrutor {
         try {
             //Desnecessário caso o a chave primária da tabela Pessoa esteja configurada como cascade em caso de exclusão.
             //Inicio
-            ps = connection.prepareStatement("DELETE FROM Instrutor WHERE cpf = ?");
+            ps = connection.prepareStatement("DELETE FROM poo_Instrutor WHERE cpf = ?");
             ps.setString(1, Instrutor.getCpf());
             ps.execute();
             //Fim

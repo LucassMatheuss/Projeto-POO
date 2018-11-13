@@ -5,16 +5,16 @@ import java.util.ArrayList;
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Turma {
-    private String siglaTurma, descricao, dataInicio, 
+    private String siglaTurma, nome, dataInicio, 
             dataTermino, periodo, observacoes;
     private int qtdeVagas;
     private Instrutor instrutor;
     private ArrayList<Matricula> matriculas;
     private Curso curso;
     
-    public Turma(String siglaTurma, String descricao) {
+    public Turma(String siglaTurma, String nome) {
         this.siglaTurma = siglaTurma;
-        this.descricao = descricao;
+        this.nome = nome;
         matriculas = new ArrayList<Matricula>();
     }
 
@@ -22,12 +22,12 @@ public class Turma {
         return siglaTurma;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getNome() {
+        return nome;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDataInicio() {
@@ -92,5 +92,8 @@ public class Turma {
     public void setCurso(Curso curso) {
         this.curso = curso;
     }
-    
+
+    public Curso getCurso() {
+        return curso;
+    }
 }

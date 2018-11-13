@@ -23,7 +23,7 @@ public class DaoAluno {
         PreparedStatement ps = null;
         try {
             dp.inserir((Pessoa)aluno);
-            ps = connection.prepareStatement("INSERT INTO Aluno (cpf, escolaridade) " +
+            ps = connection.prepareStatement("INSERT INTO poo_Aluno (cpf, escolaridade) " +
                     "VALUES(?, ?)");
             ps.setString(1, aluno.getCpf());
             ps.setString(2, aluno.getEscolaridade());
@@ -37,7 +37,7 @@ public class DaoAluno {
         PreparedStatement ps = null;
         try {
             dp.alterar(aluno);
-            ps = connection.prepareStatement("UPDATE Aluno SET escolaridade = ? WHERE cpf = ?"); 
+            ps = connection.prepareStatement("UPDATE poo_Aluno SET escolaridade = ? WHERE cpf = ?"); 
             ps.setString(1, aluno.getEscolaridade());
             ps.setString(2, aluno.getCpf());
             ps.execute();
@@ -46,12 +46,12 @@ public class DaoAluno {
         }
     }
     
-    public Aluno carregar (String cpf){
+    public Aluno consultar (String cpf){
         Aluno aluno = null;
         PreparedStatement ps = null;
         try {
-            aluno = (Aluno)dp.carregar(cpf, "aluno");
-            ps = connection.prepareStatement("SELECT * FROM Aluno WHERE cpf = ?");
+            aluno = (Aluno)dp.consultar(cpf, "aluno");
+            ps = connection.prepareStatement("SELECT * FROM poo_Aluno WHERE cpf = ?");
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -69,7 +69,7 @@ public class DaoAluno {
         try {
             //Desnecessário caso o a chave primária da tabela Pessoa esteja configurada como cascade em caso de exclusão.
             //Inicio
-            ps = connection.prepareStatement("DELETE FROM Aluno WHERE cpf = ?");
+            ps = connection.prepareStatement("DELETE FROM poo_Aluno WHERE cpf = ?");
             ps.setString(1, aluno.getCpf());
             ps.execute();
             //Fim
