@@ -5,6 +5,13 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoAluno;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.Aluno;
+import fatec.poo.model.Pessoa;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel Pilan
@@ -16,8 +23,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
      */
     public Gui_Aluno() {
         initComponents();
-        
-        
+
     }
 
     /**
@@ -56,7 +62,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
         cmbSexo = new javax.swing.JComboBox<>();
         cmbEstadoCivil = new javax.swing.JComboBox<>();
         cmbEstado = new javax.swing.JComboBox<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbEscolaridade = new javax.swing.JComboBox<>();
         ftxtRG = new javax.swing.JFormattedTextField();
         ftxtDataNascimento = new javax.swing.JFormattedTextField();
         ftxtCEP = new javax.swing.JFormattedTextField();
@@ -73,6 +79,11 @@ public class Gui_Aluno extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Aluno");
         setPreferredSize(new java.awt.Dimension(850, 400));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblCPF.setText("CPF");
 
@@ -168,11 +179,11 @@ public class Gui_Aluno extends javax.swing.JFrame {
         cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acre (AC)", "Alagoas (AL)", "Amapá (AP)", "Amazonas (AM)", "Bahia (BA)", "Ceará (CE)", "Distrito Federal (DF)", "Espírito Santo (ES)", "Goiás (GO)", "Maranhão (MA)", "Mato Grosso (MT)", "Mato Grosso do Sul (MS)", "Minas Gerais (MG)", "Pará (PA) ", "Paraíba (PB)", "Paraná (PR)", "Pernambuco (PE)", "Piauí (PI)", "Rio de Janeiro (RJ)", "Rio Grande do Norte (RN)", "Rio Grande do Sul (RS)", "Rondônia (RO)", "Roraima (RR)", "Santa Catarina (SC)", "São Paulo (SP)", "Sergipe (SE)", "Tocantins (TO)" }));
         cmbEstado.setEnabled(false);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum", "Ensino Fundamental Incompleto", "Ensino Fundamental Completo", "Ensino Medio Incompleto", "Ensino Medio Completo", "Ensino Superior Incompleto", "Ensino Superior Completo" }));
-        jComboBox1.setEnabled(false);
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cmbEscolaridade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nenhum", "Ensino Fundamental Incompleto", "Ensino Fundamental Completo", "Ensino Medio Incompleto", "Ensino Medio Completo", "Ensino Superior Incompleto", "Ensino Superior Completo" }));
+        cmbEscolaridade.setEnabled(false);
+        cmbEscolaridade.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cmbEscolaridadeActionPerformed(evt);
             }
         });
 
@@ -293,7 +304,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(lblEscolaridade)
                                             .addGap(18, 18, 18)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cmbEscolaridade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(lblTelefoneResidencial)
@@ -378,7 +389,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblEscolaridade)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbEscolaridade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBairro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -454,9 +465,9 @@ public class Gui_Aluno extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbSexoActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cmbEscolaridadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEscolaridadeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cmbEscolaridadeActionPerformed
 
     private void ftxtRGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftxtRGActionPerformed
         // TODO add your handling code here:
@@ -471,20 +482,180 @@ public class Gui_Aluno extends javax.swing.JFrame {
     }//GEN-LAST:event_ftxtCEPActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        // TODO add your handling code here:
+        String cpf = ftxtCPF.toString();
+        cpf = cpf.replaceAll("\\D", "");
+        if (Pessoa.validarCPF(cpf)) {
+            try {
+                throw new Exception("CPF é inválido!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            aluno = null;
+            aluno = daoAluno.consultar(ftxtCPF.getText());
+
+            if (aluno == null) {
+                btnConsultar.setEnabled(false);
+                btnInserir.setEnabled(true);
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+            } else {
+                txtNome.setText(aluno.getNome());
+                txtEndereco.setText(aluno.getEndereco());
+                txtBairro.setText(aluno.getBairro());
+                txtCidade.setText(aluno.getCidade());
+                txtEmail.setText(aluno.getEmail());
+                txtNumero.setText(String.valueOf(aluno.getNumero()));
+                ftxtCEP.setText(aluno.getCep());
+                ftxtCelular.setText(aluno.getCelular());
+                ftxtDataNascimento.setText(aluno.getDataNasc());
+                ftxtTelefoneResidencial.setText(aluno.getTelefone());
+                cmbSexo.addItem(aluno.getSexo());
+                cmbEstado.addItem(aluno.getEstado());
+                cmbEstadoCivil.addItem(aluno.getEstadoCivil());
+                cmbEscolaridade.addItem(aluno.getEscolaridade());   
+                
+                btnConsultar.setEnabled(false);
+                btnInserir.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+
+                ftxtCPF.setEnabled(false);
+                txtNome.setEnabled(true);
+                txtNome.requestFocus();
+                txtBairro.setEnabled(true);
+                txtCidade.setEnabled(true);
+                txtEmail.setEnabled(true);
+                txtEndereco.setEnabled(true);
+                ftxtRG.setEnabled(true);
+                cmbEscolaridade.setEnabled(true);
+                txtNumero.setEnabled(true);
+                cmbSexo.setEnabled(true);
+                cmbEstado.setEnabled(true);
+                cmbEstadoCivil.setEnabled(true);
+                ftxtCEP.setEnabled(true);
+                ftxtCelular.setEnabled(true);
+                ftxtDataNascimento.setEnabled(true);
+                ftxtTelefoneResidencial.setEnabled(true);
+
+            }
+        }
+
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        btnInserir.setEnabled(false);
+        aluno = new Aluno(ftxtCPF.getText(), txtNome.getText());
+
+        aluno.setBairro(txtBairro.getText());
+        aluno.setCep(ftxtCEP.getText());
+        aluno.setCidade(txtCidade.getText());
+        aluno.setEmail(txtEmail.getText());
+        aluno.setEndereco(txtEndereco.getText());
+        aluno.setNumero(Integer.valueOf(txtNumero.getText()));
+        aluno.setCelular(ftxtCelular.getText());
+        aluno.setDataNasc(ftxtDataNascimento.getText());
+        aluno.setRg(ftxtRG.getText());
+        aluno.setTelefone(ftxtTelefoneResidencial.getText());
+        aluno.setSexo((String) cmbSexo.getSelectedItem());
+        aluno.setEstado((String) cmbEstado.getSelectedItem());
+        aluno.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
+        aluno.setEscolaridade((String) cmbEscolaridade.getSelectedItem());
+        aluno.setMatricula(null);
+
+        daoAluno.inserir(aluno);
+
+        ftxtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        ftxtCPF.requestFocus();
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        ftxtRG.setEnabled(false);
+        cmbEscolaridade.setEnabled(false);
+        txtNumero.setEnabled(false);
+        cmbSexo.setEnabled(false);
+        cmbEstado.setEnabled(false);
+        cmbEstadoCivil.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        ftxtCelular.setEnabled(false);
+        ftxtDataNascimento.setEnabled(false);
+        ftxtTelefoneResidencial.setEnabled(false);
+
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        btnAlterar.setEnabled(false);
+        aluno.setNome(txtNome.getText());
+        aluno.setBairro(txtBairro.getText());
+        aluno.setCep(ftxtCEP.getText());
+        aluno.setCidade(txtCidade.getText());
+        aluno.setEmail(txtEmail.getText());
+        aluno.setEndereco(txtEndereco.getText());
+        aluno.setNumero(Integer.valueOf(txtNumero.getText()));
+        aluno.setCelular(ftxtCelular.getText());
+        aluno.setDataNasc(ftxtDataNascimento.getText());
+        aluno.setRg(ftxtRG.getText());
+        aluno.setTelefone(ftxtTelefoneResidencial.getText());
+        aluno.setSexo((String) cmbSexo.getSelectedItem());
+        aluno.setEstado((String) cmbEstado.getSelectedItem());
+        aluno.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
+        aluno.setEscolaridade((String) cmbEscolaridade.getSelectedItem());
+        
+        ftxtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        ftxtCPF.requestFocus();
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        ftxtRG.setEnabled(false);
+        cmbEscolaridade.setEnabled(false);
+        txtNumero.setEnabled(false);
+        cmbSexo.setEnabled(false);
+        cmbEstado.setEnabled(false);
+        cmbEstadoCivil.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        ftxtCelular.setEnabled(false);
+        ftxtDataNascimento.setEnabled(false);
+        ftxtTelefoneResidencial.setEnabled(false);
+        
+        daoAluno.alterar(aluno);
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        btnExcluir.setEnabled(false);
+        daoAluno.excluir(aluno);
+        
+        ftxtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        ftxtCPF.requestFocus();
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        ftxtRG.setEnabled(false);
+        cmbEscolaridade.setEnabled(false);
+        txtNumero.setEnabled(false);
+        cmbSexo.setEnabled(false);
+        cmbEstado.setEnabled(false);
+        cmbEstadoCivil.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        ftxtCelular.setEnabled(false);
+        ftxtDataNascimento.setEnabled(false);
+        ftxtTelefoneResidencial.setEnabled(false);
+        
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(true);
+        btnExcluir.setEnabled(true);
+        
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+         conexao = new Conexao("BD1711015","BD1711015");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoAluno = new DaoAluno(conexao.conectar());
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -527,6 +698,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnInserir;
     private javax.swing.JButton btnSair;
+    private javax.swing.JComboBox<String> cmbEscolaridade;
     private javax.swing.JComboBox<String> cmbEstado;
     private javax.swing.JComboBox<String> cmbEstadoCivil;
     private javax.swing.JComboBox<String> cmbSexo;
@@ -536,7 +708,6 @@ public class Gui_Aluno extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField ftxtDataNascimento;
     private javax.swing.JFormattedTextField ftxtRG;
     private javax.swing.JFormattedTextField ftxtTelefoneResidencial;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblBairro;
     private javax.swing.JLabel lblCEP;
@@ -561,4 +732,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtNumero;
     // End of variables declaration//GEN-END:variables
+    private Aluno aluno = null;
+    private DaoAluno daoAluno = null;
+    private Conexao conexao = null;
 }

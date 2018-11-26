@@ -5,6 +5,14 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.Curso;
+import fatec.poo.model.Turma;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Lucas M
@@ -17,7 +25,6 @@ public class Gui_Turma extends javax.swing.JFrame {
     public Gui_Turma() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,6 +56,11 @@ public class Gui_Turma extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Turma");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblCurso.setText("Curso");
 
@@ -66,18 +78,38 @@ public class Gui_Turma extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnInserir.setText("Inserir");
         btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
         btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -105,6 +137,7 @@ public class Gui_Turma extends javax.swing.JFrame {
         cmbCurso.setEditable(true);
 
         cmbPeriodo.setEditable(true);
+        cmbPeriodo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Manha", "Tarde", "Noite" }));
         cmbPeriodo.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -191,6 +224,176 @@ public class Gui_Turma extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+        txtSiglaTurma.setEnabled(true);
+        
+        conexao = new Conexao("BD1711015","BD1711015");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoTurma = new DaoTurma(conexao.conectar());
+
+        daoCurso = new DaoCurso(conexao.conectar());
+        
+         ArrayList<String> array;
+         
+         
+         array = daoCurso.listar();
+            String str = null;  
+            for(int i = 0;i<array.size(); i++ ){  
+                str = (String) array.get(i).toString();  
+               cmbCurso.addItem(str);   
+
+            } 
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        turma = null;
+        turma = daoTurma.consultar(txtSiglaTurma.getText());
+        
+        if(turma == null){
+        txtSiglaTurma.setEnabled(false);
+        cmbCurso.setEnabled(false);
+        txtNome.setEnabled(true);
+        txtNome.requestFocus();
+        
+        txtQtdeVagas.setEnabled(true);
+        cmbPeriodo.setEnabled(true);
+        ftxtDataInicio.setEnabled(true);
+        ftxtDataTermino.setEnabled(true);
+        
+        btnConsultar.setEnabled(false);
+        btnInserir.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        }
+        else{
+            txtNome.setText(turma.getNome());
+            txtQtdeVagas.setText(Integer.toString(turma.getQtdeVagas()));
+            cmbPeriodo.setSelectedItem(turma.getPeriodo());
+            ftxtDataInicio.setText(turma.getDataInicio());
+            ftxtDataTermino.setText(turma.getDataTermino());
+            
+            txtSiglaTurma.setEnabled(false);
+            cmbCurso.setEnabled(false);
+            
+            txtNome.setEnabled(true);
+            txtNome.requestFocus();
+            txtQtdeVagas.setEnabled(true);
+            cmbPeriodo.setEnabled(true);
+            ftxtDataInicio.setEnabled(true);
+            ftxtDataTermino.setEnabled(true);
+            
+             btnConsultar.setEnabled(false);
+             btnInserir.setEnabled(false);
+             btnAlterar.setEnabled(true);
+             btnExcluir.setEnabled(true); 
+        }
+        
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        
+        turma = new Turma (txtSiglaTurma.getText(),txtNome.getText());
+        Curso curso = daoCurso.consultar(cmbCurso.getSelectedItem().toString());
+        curso.addTurmas(turma);
+        
+        
+        turma.setQtdeVagas(Integer.parseInt(txtQtdeVagas.getText()));
+        turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
+        turma.setDataInicio(ftxtDataInicio.getText().replace("/", ""));
+        turma.setDataTermino(ftxtDataTermino.getText().replace("/", ""));
+        
+        daoTurma.inserir(turma);
+        
+        txtSiglaTurma.setText("");
+        txtNome.setText("");
+        txtQtdeVagas.setText("");
+        cmbPeriodo.setSelectedItem("");
+        ftxtDataInicio.setText("");
+        ftxtDataTermino.setText("");
+        
+        btnInserir.setEnabled(false);
+         
+        txtSiglaTurma.setEnabled(true);
+        cmbCurso.setEnabled(true);
+        txtSiglaTurma.requestFocus();
+        
+        txtNome.setEnabled(false);
+        txtQtdeVagas.setEnabled(false);
+        cmbPeriodo.setEnabled(false);
+        ftxtDataInicio.setEnabled(false);
+        ftxtDataTermino.setEnabled(false);
+        
+        
+        
+        btnConsultar.setEnabled(true);
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
+            
+        turma.setQtdeVagas(Integer.parseInt(txtQtdeVagas.getText()));
+        turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());      //Conferir se isso funciona
+        turma.setDataInicio(ftxtDataInicio.getText().replace("/", ""));
+        turma.setDataTermino(ftxtDataTermino.getText().replace("/", ""));
+        
+        daoTurma.alterar(turma);
+        
+        }
+        
+        txtSiglaTurma.setText("");
+        txtNome.setText("");
+        txtQtdeVagas.setText("");
+        cmbPeriodo.setSelectedItem("");  //Conferir se isso funciona
+        ftxtDataInicio.setText("");
+        ftxtDataTermino.setText("");
+        
+        txtSiglaTurma.setEnabled(true);
+        cmbCurso.setEnabled(true);
+        txtSiglaTurma.requestFocus();
+        
+        txtNome.setEnabled(false);
+        txtQtdeVagas.setEnabled(false);
+        cmbPeriodo.setEnabled(false);
+        ftxtDataInicio.setEnabled(false);
+        ftxtDataTermino.setEnabled(false);
+        
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
+            daoTurma.excluir(turma);
+            
+       }
+        
+        txtSiglaTurma.setText("");
+        txtNome.setText("");
+        txtQtdeVagas.setText("");
+        cmbPeriodo.setSelectedItem("");  //Conferir se isso funciona
+        ftxtDataInicio.setText("");
+        ftxtDataTermino.setText("");
+        
+        txtSiglaTurma.setEnabled(true);
+        cmbCurso.setEnabled(true);
+        txtSiglaTurma.requestFocus();
+        
+        txtNome.setEnabled(false);
+        txtQtdeVagas.setEnabled(false);
+        cmbPeriodo.setEnabled(false);
+        ftxtDataInicio.setEnabled(false);
+        ftxtDataTermino.setEnabled(false);
+        
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -208,20 +411,20 @@ public class Gui_Turma extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Gui_Turma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_Curso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Gui_Turma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_Curso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Gui_Turma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_Curso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Gui_Turma.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Gui_Curso.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gui_Turma().setVisible(true);
+                new Gui_Curso().setVisible(true);
             }
         });
     }
@@ -247,4 +450,8 @@ public class Gui_Turma extends javax.swing.JFrame {
     private javax.swing.JTextField txtQtdeVagas;
     private javax.swing.JTextField txtSiglaTurma;
     // End of variables declaration//GEN-END:variables
+    private DaoTurma daoTurma = null;
+    private Turma turma=null;
+    private Conexao conexao = null;
+    private DaoCurso daoCurso = null;
 }

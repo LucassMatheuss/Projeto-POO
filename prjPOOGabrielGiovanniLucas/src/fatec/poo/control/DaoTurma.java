@@ -12,9 +12,8 @@ import fatec.poo.model.Turma;
  */
 public class DaoTurma {
     private Connection connection;
-    private DaoCurso dc;
     
-    public DaoTurma (Connection connetion){
+    public DaoTurma (Connection connection){
         this.connection = connection;
     }
     
@@ -22,17 +21,15 @@ public class DaoTurma {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("INSERT INTO poo_Turma (siglaTurma, nome, dataInicio, "
-                    + "dataTermino, periodo, observacoes, qtdeVagas, instrutor, siglaCurso) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    + "dataTermino, periodo, qtdeVagas, siglaCurso) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, turma.getSiglaTurma());
             ps.setString(2, turma.getNome());
             ps.setString(3, turma.getDataInicio());
             ps.setString(4, turma.getDataTermino());
             ps.setString(5, turma.getPeriodo());
-            ps.setString(6, turma.getObservacoes());
-            ps.setInt(7, turma.getQtdeVagas());
-            ps.setString(8, turma.getInstrutor().getCpf());
-            ps.setString(9, turma.getCurso().getSigla());
+            ps.setInt(6, turma.getQtdeVagas());
+            ps.setString(7, turma.getCurso().getSigla());
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -43,15 +40,13 @@ public class DaoTurma {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("UPDATE poo_Turma SET nome = ?, dataInicio = ?, "
-                    + "dataTermino = ?, periodo = ?, observacoes = ?, qtdeVagas = ?, instrutor = ? WHERE siglaTurma = ?");
+                    + "dataTermino = ?, periodo = ?, qtdeVagas = ? WHERE siglaTurma = ?");
             ps.setString(1, turma.getNome());
             ps.setString(2, turma.getDataInicio());
             ps.setString(3, turma.getDataTermino());
             ps.setString(4, turma.getPeriodo());
-            ps.setString(5, turma.getObservacoes());
-            ps.setInt(6, turma.getQtdeVagas());
-            ps.setString(7, turma.getInstrutor().getCpf());
-            ps.setString(8, turma.getSiglaTurma());
+            ps.setInt(5, turma.getQtdeVagas());
+            ps.setString(6, turma.getSiglaTurma());
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -73,7 +68,7 @@ public class DaoTurma {
                 turma.setPeriodo(rs.getString("periodo"));
                 turma.setObservacoes(rs.getString("observacoes"));
                 turma.setQtdeVagas(rs.getInt("qtdeVagas"));
-                curso = dc.consultar(rs.getString("siglaCurso"));
+                curso = new DaoCurso(connection).consultar(rs.getString("siglaCurso")); 
                 curso.addTurmas(turma);
             }
         } catch (SQLException ex) {
