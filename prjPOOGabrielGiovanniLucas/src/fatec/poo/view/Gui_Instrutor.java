@@ -10,20 +10,17 @@ import fatec.poo.control.DaoInstrutor;
 import fatec.poo.model.Instrutor;
 import javax.swing.JOptionPane;
 import fatec.poo.model.Pessoa;
-
 /**
  *
  * @author Giovanni
  */
 public class Gui_Instrutor extends javax.swing.JFrame {
-
     /**
      * Creates new form Gui_Instrutor
      */
     public Gui_Instrutor() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -127,11 +124,6 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         txtEmail.setEnabled(false);
 
         txtAreaAtuacao.setEnabled(false);
-        txtAreaAtuacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAreaAtuacaoActionPerformed(evt);
-            }
-        });
 
         txtCidade.setEnabled(false);
 
@@ -180,22 +172,12 @@ public class Gui_Instrutor extends javax.swing.JFrame {
 
         cmbSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Feminino" }));
         cmbSexo.setEnabled(false);
-        cmbSexo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbSexoActionPerformed(evt);
-            }
-        });
 
         cmbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Acre (AC)", "Alagoas (AL)", "Amapá (AP)", "Amazonas (AM)", "Bahia (BA)", "Ceará (CE)", "Distrito Federal (DF)", "Espírito Santo (ES)", "Goiás (GO)", "Maranhão (MA)", "Mato Grosso (MT)", "Mato Grosso do Sul (MS)", "Minas Gerais (MG)", "Pará (PA) ", "Paraíba (PB)", "Paraná (PR)", "Pernambuco (PE)", "Piauí (PI)", "Rio de Janeiro (RJ)", "Rio Grande do Norte (RN)", "Rio Grande do Sul (RS)", "Rondônia (RO)", "Roraima (RR)", "Santa Catarina (SC)", "São Paulo (SP)", "Sergipe (SE)", "Tocantins (TO)" }));
         cmbEstado.setEnabled(false);
 
         cmbEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Solteiro(a)", "Casado(a)", "Viuvo(a)" }));
         cmbEstadoCivil.setEnabled(false);
-        cmbEstadoCivil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbEstadoCivilActionPerformed(evt);
-            }
-        });
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
@@ -385,7 +367,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1711015","BD1711015");
+        conexao = new Conexao("BD1711015","BD1711015");    
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoInstrutor = new DaoInstrutor(conexao.conectar()); 
@@ -403,26 +385,6 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         } else {
             instrutor = null;
             instrutor = daoInstrutor.consultar(ftxtCPF.getText().replace(".", "").replace("-", ""));
-            
-            
-                ftxtCPF.setEnabled(false);
-                txtNome.setEnabled(true);
-                txtNome.requestFocus();
-                txtBairro.setEnabled(true);
-                txtCidade.setEnabled(true);
-                txtEmail.setEnabled(true);
-                txtEndereco.setEnabled(true);
-                txtFormacao.setEnabled(true);
-                txtAreaAtuacao.setEnabled(true);
-                txtNumero.setEnabled(true);
-                cmbSexo.setEnabled(true);
-                cmbEstado.setEnabled(true);
-                cmbEstadoCivil.setEnabled(true);
-                ftxtRG.setEnabled(true);
-                ftxtCEP.setEnabled(true);
-                ftxtCelular.setEnabled(true);
-                ftxtDataNasc.setEnabled(true);
-                ftxtTelefone.setEnabled(true);
 
             if (instrutor == null) {
                 btnConsultar.setEnabled(false);
@@ -430,6 +392,10 @@ public class Gui_Instrutor extends javax.swing.JFrame {
                 btnAlterar.setEnabled(false);
                 btnExcluir.setEnabled(false);
             } else {
+                if (instrutor.getCpf().length() == 11 && instrutor.getAreaAtuacao() == null){
+                    JOptionPane.showMessageDialog(null, "CPF Inválido para cadastro! Já cadastrado como aluno.");
+                    return;
+                }
                 txtNome.setText(instrutor.getNome());
                 txtEndereco.setText(instrutor.getEndereco());
                 txtBairro.setText(instrutor.getBairro());
@@ -451,9 +417,26 @@ public class Gui_Instrutor extends javax.swing.JFrame {
                 btnInserir.setEnabled(false);
                 btnAlterar.setEnabled(true);
                 btnExcluir.setEnabled(true);
-
-
             }
+            
+            ftxtCPF.setEnabled(false);
+            txtNome.setEnabled(true);
+            txtNome.requestFocus();
+            txtBairro.setEnabled(true);
+            txtCidade.setEnabled(true);
+            txtEmail.setEnabled(true);
+            txtEndereco.setEnabled(true);
+            txtFormacao.setEnabled(true);
+            txtAreaAtuacao.setEnabled(true);
+            txtNumero.setEnabled(true);
+            cmbSexo.setEnabled(true);
+            cmbEstado.setEnabled(true);
+            cmbEstadoCivil.setEnabled(true);
+            ftxtRG.setEnabled(true);
+            ftxtCEP.setEnabled(true);
+            ftxtCelular.setEnabled(true);
+            ftxtDataNasc.setEnabled(true);
+            ftxtTelefone.setEnabled(true);
         }
 
     }//GEN-LAST:event_btnConsultarActionPerformed
@@ -522,34 +505,28 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
-
     }//GEN-LAST:event_btnInserirActionPerformed
-
-    private void txtAreaAtuacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAreaAtuacaoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAreaAtuacaoActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
-        instrutor.setNome(txtNome.getText());
-        instrutor.setBairro(txtBairro.getText());
-        instrutor.setCep(ftxtCEP.getText().replace("-", ""));
-        instrutor.setCidade(txtCidade.getText());
-        instrutor.setEmail(txtEmail.getText());
-        instrutor.setEndereco(txtEndereco.getText());
-        instrutor.setNumero(Integer.valueOf(txtNumero.getText()));
-        instrutor.setCelular(ftxtCelular.getText().replace("(", "").replace(")", "").replace("-", ""));
-        instrutor.setDataNasc(ftxtDataNasc.getText().replace("/", ""));
-        instrutor.setRg(ftxtRG.getText().replace(".", "").replace("-", ""));
-        instrutor.setTelefone(ftxtTelefone.getText().replace("(", "").replace(")", "").replace("-", ""));
-        instrutor.setFormacao(txtFormacao.getText());
-        instrutor.setSexo((String) cmbSexo.getSelectedItem());
-        instrutor.setEstado((String) cmbEstado.getSelectedItem());
-        instrutor.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
-        instrutor.setAreaAtuacao(txtAreaAtuacao.getText());
+            instrutor.setNome(txtNome.getText());
+            instrutor.setBairro(txtBairro.getText());
+            instrutor.setCep(ftxtCEP.getText().replace("-", ""));
+            instrutor.setCidade(txtCidade.getText());
+            instrutor.setEmail(txtEmail.getText());
+            instrutor.setEndereco(txtEndereco.getText());
+            instrutor.setNumero(Integer.valueOf(txtNumero.getText()));
+            instrutor.setCelular(ftxtCelular.getText().replace("(", "").replace(")", "").replace("-", ""));
+            instrutor.setDataNasc(ftxtDataNasc.getText().replace("/", ""));
+            instrutor.setRg(ftxtRG.getText().replace(".", "").replace("-", ""));
+            instrutor.setTelefone(ftxtTelefone.getText().replace("(", "").replace(")", "").replace("-", ""));
+            instrutor.setFormacao(txtFormacao.getText());
+            instrutor.setSexo((String) cmbSexo.getSelectedItem());
+            instrutor.setEstado((String) cmbEstado.getSelectedItem());
+            instrutor.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
+            instrutor.setAreaAtuacao(txtAreaAtuacao.getText());
 
-        daoInstrutor.alterar(instrutor);
-        
+            daoInstrutor.alterar(instrutor);
         }
         
         ftxtCPF.setText("");
@@ -593,12 +570,11 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         btnInserir.setEnabled(false);
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
-
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
-        daoInstrutor.excluir(instrutor);
+            daoInstrutor.excluir(instrutor);
         }
         
         ftxtCPF.setText("");
@@ -650,16 +626,8 @@ public class Gui_Instrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-dispose();        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_btnSairActionPerformed
-
-    private void cmbSexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSexoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbSexoActionPerformed
-
-    private void cmbEstadoCivilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoCivilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbEstadoCivilActionPerformed
 
     /**
      * @param args the command line arguments

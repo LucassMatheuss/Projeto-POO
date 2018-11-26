@@ -22,7 +22,7 @@ public class DaoCurso {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("INSERT INTO poo_Curso(sigla, nome, cargaHoraria, "
-                    + "valor, dataVigente, valorHoraInstrutor, programa) VALUES(?, ?, ?, ?, ?, ?, ?)");
+                    + "valor, dataVigencia, valorHoraInstrutor, programa) VALUES(?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, curso.getSigla());
             ps.setString(2, curso.getNome());
             ps.setInt(3, curso.getCargaHoraria());
@@ -40,7 +40,7 @@ public class DaoCurso {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("UPDATE poo_Curso SET nome = ?, cargaHoraria = ?, valor = ?, "
-                    + "dataVigente = ?, valorHoraInstrutor = ?, programa = ? WHERE sigla = ?");
+                    + "dataVigencia = ?, valorHoraInstrutor = ?, programa = ? WHERE sigla = ?");
             ps.setString(1, curso.getNome());
             ps.setInt(2, curso.getCargaHoraria());
             ps.setDouble(3, curso.getValor());
@@ -65,7 +65,7 @@ public class DaoCurso {
                 curso = new Curso(sigla, rs.getString("nome"));
                 curso.setCargaHoraria(rs.getInt("cargaHoraria"));
                 curso.setValor(rs.getDouble("valor"));
-                curso.setDataVigencia(rs.getString("dataVigente"));
+                curso.setDataVigencia(rs.getString("dataVigencia"));
                 curso.setValorHoraInstrutor(rs.getDouble("valorHoraInstrutor"));
                 curso.setPrograma(rs.getString("programa"));
             }
