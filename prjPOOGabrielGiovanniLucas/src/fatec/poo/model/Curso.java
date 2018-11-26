@@ -5,7 +5,6 @@ import java.util.ArrayList;
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Curso {
-    
     private String Sigla;
     private String Nome;
     private int CargaHoraria;
@@ -82,6 +81,10 @@ public class Curso {
     public void addTurmas(Turma t){
         Turmas.add(t);
         t.setCurso(this);
+    }
+
+    public void setNome(String Nome) {
+        this.Nome = Nome;
     }
     
     

@@ -5,6 +5,11 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.model.Curso;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Lucas M
@@ -41,14 +46,19 @@ public class Gui_Curso extends javax.swing.JFrame {
         lblDataVigencia = new javax.swing.JLabel();
         lblValorHoraInstrutor = new javax.swing.JLabel();
         txtValorHoraInstrutor = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnInserir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnSair = new javax.swing.JButton();
         ftxtDataVigencia = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastrar Curso");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         lblSiglaCurso.setText("Sigla curso");
 
@@ -62,10 +72,20 @@ public class Gui_Curso extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
         txtNomeCurso.setEnabled(false);
 
         txtCargaHoraria.setEnabled(false);
+        txtCargaHoraria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCargaHorariaActionPerformed(evt);
+            }
+        });
 
         txtValorCurso.setEnabled(false);
 
@@ -77,20 +97,40 @@ public class Gui_Curso extends javax.swing.JFrame {
 
         txtValorHoraInstrutor.setEnabled(false);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
-        jButton1.setText("Inserir");
-        jButton1.setEnabled(false);
+        btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
+        btnInserir.setText("Inserir");
+        btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
-        jButton2.setText("Alterar");
-        jButton2.setEnabled(false);
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
+        btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
-        jButton3.setText("Excluir");
-        jButton3.setEnabled(false);
+        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
+        btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
-        jButton4.setText("Sair");
+        btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
+        btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         try {
             ftxtDataVigencia.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -98,6 +138,11 @@ public class Gui_Curso extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         ftxtDataVigencia.setEnabled(false);
+        ftxtDataVigencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ftxtDataVigenciaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,13 +180,13 @@ public class Gui_Curso extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnConsultar)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -174,15 +219,190 @@ public class Gui_Curso extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton4)
-                    .addComponent(jButton3))
+                    .addComponent(btnInserir)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnSair)
+                    .addComponent(btnExcluir))
                 .addGap(42, 42, 42))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        
+        curso = null;
+        curso = daoCurso.consultar(txtSiglaCurso.getText());
+        
+        if (curso == null){
+        txtSiglaCurso.setEnabled(false);
+        txtNomeCurso.setEnabled(true);
+        txtNomeCurso.requestFocus();
+        
+        
+         txtCargaHoraria.setEnabled(true);
+         ftxtDataVigencia.setEnabled(true);
+         txtValorCurso.setEnabled(true);
+         txtValorHoraInstrutor.setEnabled(true);
+         txtProgramaCurso.setEnabled(true);
+         
+        
+        btnConsultar.setEnabled(false);
+        btnInserir.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        }
+        else{
+        txtNomeCurso.setText(curso.getNome());
+        txtCargaHoraria.setText(Integer.toString(curso.getCargaHoraria()));
+        ftxtDataVigencia.setText(curso.getDataVigencia());
+        txtValorCurso.setText(Double.toString(curso.getValor()));
+        txtValorHoraInstrutor.setText(Double.toString(curso.getValorHoraInstrutor()));
+        txtProgramaCurso.setText(curso.getPrograma());
+        
+        
+         txtSiglaCurso.setEnabled(false); 
+         txtNomeCurso.setEnabled(true);
+         txtNomeCurso.requestFocus();
+         txtCargaHoraria.setEnabled(true);
+         ftxtDataVigencia.setEnabled(true);
+         txtValorCurso.setEnabled(true);
+         txtValorHoraInstrutor.setEnabled(true);
+         txtProgramaCurso.setEnabled(true);
+         
+          btnConsultar.setEnabled(false);
+          btnInserir.setEnabled(false);
+          btnAlterar.setEnabled(true);
+          btnExcluir.setEnabled(true); 
+        }
+        
+        
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("BD1711015","BD1711015");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoCurso = new DaoCurso(conexao.conectar());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+
+        curso = new Curso(txtSiglaCurso.getText(),txtNomeCurso.getText());
+        
+        curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+        curso.setDataVigencia(ftxtDataVigencia.getText().replace("/", ""));
+        curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+        curso.setValorHoraInstrutor(Double.parseDouble(txtValorHoraInstrutor.getText()));
+        curso.setPrograma(txtProgramaCurso.getText());
+        
+        
+        daoCurso.inserir(curso);
+        
+        
+        txtSiglaCurso.setText("");
+        txtNomeCurso.setText("");    
+        txtCargaHoraria.setText("");  
+        ftxtDataVigencia.setText("");  
+        txtValorCurso.setText("");  
+        txtValorHoraInstrutor.setText("");  
+        txtProgramaCurso.setText("");  
+        
+        btnInserir.setEnabled(false);
+        
+        txtSiglaCurso.setEnabled(true);
+        txtSiglaCurso.requestFocus();
+        
+        txtNomeCurso.setEnabled(false);
+        txtCargaHoraria.setEnabled(false);
+        ftxtDataVigencia.setEnabled(false);
+        txtValorCurso.setEnabled(false);
+        txtValorHoraInstrutor.setEnabled(false);
+        txtProgramaCurso.setEnabled(false);
+        
+        btnConsultar.setEnabled(true);
+        
+        
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void txtCargaHorariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCargaHorariaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCargaHorariaActionPerformed
+
+    private void ftxtDataVigenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ftxtDataVigenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ftxtDataVigenciaActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){//Sim
+           curso.setNome(txtNomeCurso.getText());
+           curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+           curso.setDataVigencia(ftxtDataVigencia.getText().replace("/", ""));
+           curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+           curso.setValorHoraInstrutor(Double.parseDouble(txtValorHoraInstrutor.getText()));
+           curso.setPrograma(txtProgramaCurso.getText());
+
+           daoCurso.alterar(curso);
+        } 
+        
+        txtSiglaCurso.setText("");
+        txtNomeCurso.setText("");    
+        txtCargaHoraria.setText("");  
+        ftxtDataVigencia.setText("");  
+        txtValorCurso.setText("");  
+        txtValorHoraInstrutor.setText("");  
+        txtProgramaCurso.setText("");  
+        
+        txtSiglaCurso.setEnabled(true); 
+        txtSiglaCurso.requestFocus();
+        
+        txtNomeCurso.setEnabled(false);
+        txtCargaHoraria.setEnabled(false);
+        ftxtDataVigencia.setEnabled(false);
+        txtValorCurso.setEnabled(false);
+        txtValorHoraInstrutor.setEnabled(false);
+        txtProgramaCurso.setEnabled(false);
+        
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+       if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
+            daoCurso.excluir(curso);
+       }
+       
+       txtSiglaCurso.setText("");
+        txtNomeCurso.setText("");    
+        txtCargaHoraria.setText("");  
+        ftxtDataVigencia.setText("");  
+        txtValorCurso.setText("");  
+        txtValorHoraInstrutor.setText("");  
+        txtProgramaCurso.setText("");  
+        
+        txtSiglaCurso.setEnabled(true); 
+        txtSiglaCurso.requestFocus();
+        
+        txtNomeCurso.setEnabled(false);
+        txtCargaHoraria.setEnabled(false);
+        ftxtDataVigencia.setEnabled(false);
+        txtValorCurso.setEnabled(false);
+        txtValorHoraInstrutor.setEnabled(false);
+        txtProgramaCurso.setEnabled(false);
+        
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,12 +440,12 @@ public class Gui_Curso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnInserir;
+    private javax.swing.JButton btnSair;
     private javax.swing.JFormattedTextField ftxtDataVigencia;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel lblCargaHoraria;
     private javax.swing.JLabel lblDataVigencia;
     private javax.swing.JLabel lblNomeCurso;
@@ -240,4 +460,7 @@ public class Gui_Curso extends javax.swing.JFrame {
     private javax.swing.JTextField txtValorCurso;
     private javax.swing.JTextField txtValorHoraInstrutor;
     // End of variables declaration//GEN-END:variables
+    private DaoCurso daoCurso = null;
+    private Curso curso=null;
+    private Conexao conexao = null;
 }

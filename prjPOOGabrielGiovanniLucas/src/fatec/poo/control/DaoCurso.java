@@ -22,7 +22,7 @@ public class DaoCurso {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("INSERT INTO poo_Curso(sigla, nome, cargaHoraria, "
-                    + "valor, dataVigencia, valorHoraInstrutor, programa) VALUES(?, ?, ?, ?, ?, ?, ?)");
+                    + "valor, dataVigente, valorHoraInstrutor, programa) VALUES(?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, curso.getSigla());
             ps.setString(2, curso.getNome());
             ps.setInt(3, curso.getCargaHoraria());
@@ -40,7 +40,7 @@ public class DaoCurso {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("UPDATE poo_Curso SET nome = ?, cargaHoraria = ?, valor = ?, "
-                    + "dataVigencia = ?, valorHoraInstrutor = ?, programa = ? WHERE sigla = ?");
+                    + "dataVigente = ?, valorHoraInstrutor = ?, programa = ? WHERE sigla = ?");
             ps.setString(1, curso.getNome());
             ps.setInt(2, curso.getCargaHoraria());
             ps.setDouble(3, curso.getValor());
@@ -58,13 +58,14 @@ public class DaoCurso {
         Curso curso = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT * FROM poo_Curso");
+            ps = connection.prepareStatement("SELECT * FROM poo_Curso where sigla = ?" );
+            ps.setString(1, sigla);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
                 curso = new Curso(sigla, rs.getString("nome"));
                 curso.setCargaHoraria(rs.getInt("cargaHoraria"));
                 curso.setValor(rs.getDouble("valor"));
-                curso.setDataVigencia(rs.getString("dataVigencia"));
+                curso.setDataVigencia(rs.getString("dataVigente"));
                 curso.setValorHoraInstrutor(rs.getDouble("valorHoraInstrutor"));
                 curso.setPrograma(rs.getString("programa"));
             }
@@ -78,10 +79,10 @@ public class DaoCurso {
         ArrayList<String> cursos = new ArrayList<>();
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT nome FROM poo_Curso");
+            ps = connection.prepareStatement("SELECT sigla FROM poo_Curso");
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                cursos.add(rs.getString("nome"));
+                cursos.add(rs.getString("sigla"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

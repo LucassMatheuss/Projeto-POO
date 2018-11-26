@@ -24,7 +24,7 @@ public class Conexao {
         this.driver = driver;
     }
    
-    public Connection criarConexao() {
+    public Connection conectar() {
         if (connection == null) {
             try {
                 Class.forName(driver);
