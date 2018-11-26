@@ -48,7 +48,7 @@ public class DaoAluno {
     
     public Aluno consultar (String cpf){
         Aluno aluno = null;
-        PreparedStatement ps = null;
+        PreparedStatement ps = null; 
         try {
             aluno = (Aluno)dp.consultar(cpf, "aluno");
             ps = connection.prepareStatement("SELECT * FROM poo_Aluno WHERE cpf = ?");

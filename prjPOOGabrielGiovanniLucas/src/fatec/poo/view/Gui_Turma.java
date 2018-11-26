@@ -113,6 +113,11 @@ public class Gui_Turma extends javax.swing.JFrame {
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         txtSiglaTurma.setEnabled(false);
 
@@ -239,10 +244,10 @@ public class Gui_Turma extends javax.swing.JFrame {
          
          
          array = daoCurso.listar();
-            String str = null;  
+            
             for(int i = 0;i<array.size(); i++ ){  
-                str = (String) array.get(i).toString();  
-               cmbCurso.addItem(str);   
+                  
+               cmbCurso.addItem(array.get(i).toString());   
 
             } 
     }//GEN-LAST:event_formWindowOpened
@@ -332,7 +337,8 @@ public class Gui_Turma extends javax.swing.JFrame {
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
-            
+        
+        turma.setNome(txtNome.getText());
         turma.setQtdeVagas(Integer.parseInt(txtQtdeVagas.getText()));
         turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());      //Conferir se isso funciona
         turma.setDataInicio(ftxtDataInicio.getText().replace("/", ""));
@@ -393,6 +399,10 @@ public class Gui_Turma extends javax.swing.JFrame {
         btnAlterar.setEnabled(false);
         btnExcluir.setEnabled(false);
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments

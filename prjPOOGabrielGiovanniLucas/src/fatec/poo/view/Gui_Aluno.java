@@ -199,7 +199,11 @@ public class Gui_Aluno extends javax.swing.JFrame {
             }
         });
 
-        ftxtDataNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        try {
+            ftxtDataNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         ftxtDataNascimento.setEnabled(false);
         ftxtDataNascimento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,6 +274,11 @@ public class Gui_Aluno extends javax.swing.JFrame {
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -482,9 +491,9 @@ public class Gui_Aluno extends javax.swing.JFrame {
     }//GEN-LAST:event_ftxtCEPActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        String cpf = ftxtCPF.toString();
+        String cpf = ftxtCPF.getText().replace(".", "").replace("-", "");
         cpf = cpf.replaceAll("\\D", "");
-        if (Pessoa.validarCPF(cpf)) {
+        if (!Pessoa.validarCPF(cpf)) {
             try {
                 throw new Exception("CPF é inválido!");
             } catch (Exception e) {
@@ -492,34 +501,8 @@ public class Gui_Aluno extends javax.swing.JFrame {
             }
         } else {
             aluno = null;
-            aluno = daoAluno.consultar(ftxtCPF.getText());
-
-            if (aluno == null) {
-                btnConsultar.setEnabled(false);
-                btnInserir.setEnabled(true);
-                btnAlterar.setEnabled(false);
-                btnExcluir.setEnabled(false);
-            } else {
-                txtNome.setText(aluno.getNome());
-                txtEndereco.setText(aluno.getEndereco());
-                txtBairro.setText(aluno.getBairro());
-                txtCidade.setText(aluno.getCidade());
-                txtEmail.setText(aluno.getEmail());
-                txtNumero.setText(String.valueOf(aluno.getNumero()));
-                ftxtCEP.setText(aluno.getCep());
-                ftxtCelular.setText(aluno.getCelular());
-                ftxtDataNascimento.setText(aluno.getDataNasc());
-                ftxtTelefoneResidencial.setText(aluno.getTelefone());
-                cmbSexo.addItem(aluno.getSexo());
-                cmbEstado.addItem(aluno.getEstado());
-                cmbEstadoCivil.addItem(aluno.getEstadoCivil());
-                cmbEscolaridade.addItem(aluno.getEscolaridade());   
-                
-                btnConsultar.setEnabled(false);
-                btnInserir.setEnabled(false);
-                btnAlterar.setEnabled(true);
-                btnExcluir.setEnabled(true);
-
+            aluno = daoAluno.consultar(ftxtCPF.getText().replace(".", "").replace("-", ""));
+            
                 ftxtCPF.setEnabled(false);
                 txtNome.setEnabled(true);
                 txtNome.requestFocus();
@@ -538,6 +521,35 @@ public class Gui_Aluno extends javax.swing.JFrame {
                 ftxtDataNascimento.setEnabled(true);
                 ftxtTelefoneResidencial.setEnabled(true);
 
+            if (aluno == null) {                     
+                btnConsultar.setEnabled(false);
+                btnInserir.setEnabled(true);
+                btnAlterar.setEnabled(false);
+                btnExcluir.setEnabled(false);
+            } else {
+                txtNome.setText(aluno.getNome());
+                txtEndereco.setText(aluno.getEndereco());
+                txtBairro.setText(aluno.getBairro());
+                txtCidade.setText(aluno.getCidade());
+                txtEmail.setText(aluno.getEmail());
+                txtNumero.setText(String.valueOf(aluno.getNumero()));
+                ftxtCEP.setText(aluno.getCep());
+                ftxtCelular.setText(aluno.getCelular());
+                ftxtDataNascimento.setText(aluno.getDataNasc());
+                ftxtTelefoneResidencial.setText(aluno.getTelefone());
+                ftxtRG.setText(aluno.getRg());
+                cmbSexo.setSelectedItem(aluno.getSexo());
+                cmbEstado.setSelectedItem(aluno.getEstado());
+                cmbEstadoCivil.setSelectedItem(aluno.getEstadoCivil());
+                cmbEscolaridade.setSelectedItem(aluno.getEscolaridade());   
+                
+                btnConsultar.setEnabled(false);
+                btnInserir.setEnabled(false);
+                btnAlterar.setEnabled(true);
+                btnExcluir.setEnabled(true);
+
+                
+
             }
         }
 
@@ -546,85 +558,45 @@ public class Gui_Aluno extends javax.swing.JFrame {
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         aluno = new Aluno(ftxtCPF.getText(), txtNome.getText());
 
+        aluno.setCpf(ftxtCPF.getText().replace(".", "").replace("-", ""));
+        aluno.setNome(txtNome.getText());
+        //talvez precise colocar o Nome tambem Testar
         aluno.setBairro(txtBairro.getText());
-        aluno.setCep(ftxtCEP.getText());
+        aluno.setCep(ftxtCEP.getText().replace("-", ""));
         aluno.setCidade(txtCidade.getText());
         aluno.setEmail(txtEmail.getText());
         aluno.setEndereco(txtEndereco.getText());
         aluno.setNumero(Integer.valueOf(txtNumero.getText()));
-        aluno.setCelular(ftxtCelular.getText());
-        aluno.setDataNasc(ftxtDataNascimento.getText());
-        aluno.setRg(ftxtRG.getText());
-        aluno.setTelefone(ftxtTelefoneResidencial.getText());
+        aluno.setCelular(ftxtCelular.getText().replace("(", "").replace(")", "").replace("-", ""));
+        aluno.setDataNasc(ftxtDataNascimento.getText().replace("/", ""));
+        aluno.setRg(ftxtRG.getText().replace(".", "").replace("-", ""));
+        aluno.setTelefone(ftxtTelefoneResidencial.getText().replace("(", "").replace(")", "").replace("-", ""));
         aluno.setSexo((String) cmbSexo.getSelectedItem());
         aluno.setEstado((String) cmbEstado.getSelectedItem());
         aluno.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
         aluno.setEscolaridade((String) cmbEscolaridade.getSelectedItem());
-        aluno.setMatricula(null);
 
         daoAluno.inserir(aluno);
-
-        ftxtCPF.setEnabled(true);
-        txtNome.setEnabled(false);
-        ftxtCPF.requestFocus();
-        txtBairro.setEnabled(false);
-        txtCidade.setEnabled(false);
-        txtEmail.setEnabled(false);
-        txtEndereco.setEnabled(false);
-        ftxtRG.setEnabled(false);
-        cmbEscolaridade.setEnabled(false);
-        txtNumero.setEnabled(false);
-        cmbSexo.setEnabled(false);
-        cmbEstado.setEnabled(false);
-        cmbEstadoCivil.setEnabled(false);
-        ftxtCEP.setEnabled(false);
-        ftxtCelular.setEnabled(false);
-        ftxtDataNascimento.setEnabled(false);
-        ftxtTelefoneResidencial.setEnabled(false);
-
-    }//GEN-LAST:event_btnInserirActionPerformed
-
-    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        aluno.setNome(txtNome.getText());
-        aluno.setBairro(txtBairro.getText());
-        aluno.setCep(ftxtCEP.getText());
-        aluno.setCidade(txtCidade.getText());
-        aluno.setEmail(txtEmail.getText());
-        aluno.setEndereco(txtEndereco.getText());
-        aluno.setNumero(Integer.valueOf(txtNumero.getText()));
-        aluno.setCelular(ftxtCelular.getText());
-        aluno.setDataNasc(ftxtDataNascimento.getText());
-        aluno.setRg(ftxtRG.getText());
-        aluno.setTelefone(ftxtTelefoneResidencial.getText());
-        aluno.setSexo((String) cmbSexo.getSelectedItem());
-        aluno.setEstado((String) cmbEstado.getSelectedItem());
-        aluno.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
-        aluno.setEscolaridade((String) cmbEscolaridade.getSelectedItem());
         
-        ftxtCPF.setEnabled(true);
-        txtNome.setEnabled(false);
-        ftxtCPF.requestFocus();
-        txtBairro.setEnabled(false);
-        txtCidade.setEnabled(false);
-        txtEmail.setEnabled(false);
-        txtEndereco.setEnabled(false);
-        ftxtRG.setEnabled(false);
-        cmbEscolaridade.setEnabled(false);
-        txtNumero.setEnabled(false);
-        cmbSexo.setEnabled(false);
-        cmbEstado.setEnabled(false);
-        cmbEstadoCivil.setEnabled(false);
-        ftxtCEP.setEnabled(false);
-        ftxtCelular.setEnabled(false);
-        ftxtDataNascimento.setEnabled(false);
-        ftxtTelefoneResidencial.setEnabled(false);
+        ftxtCPF.setText("");
+        txtNome.setText("");
+        txtBairro.setText("");
+        ftxtCEP.setText("");
+        txtCidade.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtNumero.setText("");
+        ftxtCelular.setText("");
+        ftxtDataNascimento.setText("");
+        ftxtRG.setText("");
+        ftxtTelefoneResidencial.setText("");
+        cmbSexo.setSelectedItem("");
+        cmbEstado.setSelectedItem("");
+        cmbEstadoCivil.setSelectedItem("");
+        cmbEscolaridade.setSelectedItem("");
         
-        daoAluno.alterar(aluno);
-    }//GEN-LAST:event_btnAlterarActionPerformed
+         btnInserir.setEnabled(false);
 
-    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        daoAluno.excluir(aluno);
-        
         ftxtCPF.setEnabled(true);
         txtNome.setEnabled(false);
         ftxtCPF.requestFocus();
@@ -644,18 +616,133 @@ public class Gui_Aluno extends javax.swing.JFrame {
         ftxtTelefoneResidencial.setEnabled(false);
         
         btnConsultar.setEnabled(true);
+
+    }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
+        aluno.setCpf(ftxtCPF.getText().replace(".", "").replace("-", ""));
+        aluno.setNome(txtNome.getText());
+        aluno.setBairro(txtBairro.getText());
+        aluno.setCep(ftxtCEP.getText().replace("-", ""));
+        aluno.setCidade(txtCidade.getText());
+        aluno.setEmail(txtEmail.getText());
+        aluno.setEndereco(txtEndereco.getText());
+        aluno.setNumero(Integer.valueOf(txtNumero.getText()));
+        aluno.setCelular(ftxtCelular.getText().replace("(", "").replace(")", "").replace("-", ""));
+        aluno.setDataNasc(ftxtDataNascimento.getText().replace("/", ""));
+        aluno.setRg(ftxtRG.getText().replace(".", "").replace("-", ""));
+        aluno.setTelefone(ftxtTelefoneResidencial.getText().replace("(", "").replace(")", "").replace("-", ""));
+        aluno.setSexo((String) cmbSexo.getSelectedItem());
+        aluno.setEstado((String) cmbEstado.getSelectedItem());
+        aluno.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
+        aluno.setEscolaridade((String) cmbEscolaridade.getSelectedItem());
+        
+        daoAluno.alterar(aluno);
+        }
+        
+        ftxtCPF.setText("");
+        txtNome.setText("");
+        txtBairro.setText("");
+        ftxtCEP.setText("");
+        txtCidade.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtNumero.setText("");
+        ftxtCelular.setText("");
+        ftxtDataNascimento.setText("");
+        ftxtRG.setText("");
+        ftxtTelefoneResidencial.setText("");
+        cmbSexo.setSelectedItem("");
+        cmbEstado.setSelectedItem("");
+        cmbEstadoCivil.setSelectedItem("");
+        cmbEscolaridade.setSelectedItem("");
+        
+        ftxtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        ftxtCPF.requestFocus();
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        ftxtRG.setEnabled(false);
+        cmbEscolaridade.setEnabled(false);
+        txtNumero.setEnabled(false);
+        cmbSexo.setEnabled(false);
+        cmbEstado.setEnabled(false);
+        cmbEstadoCivil.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        ftxtCelular.setEnabled(false);
+        ftxtDataNascimento.setEnabled(false);
+        ftxtTelefoneResidencial.setEnabled(false);
+        
+        
+        btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
-        btnAlterar.setEnabled(true);
-        btnExcluir.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
+        
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+    if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
+        daoAluno.excluir(aluno);
+               }
+    
+        ftxtCPF.setText("");
+        txtNome.setText("");
+        txtBairro.setText("");
+        ftxtCEP.setText("");
+        txtCidade.setText("");
+        txtEmail.setText("");
+        txtEndereco.setText("");
+        txtNumero.setText("");
+        ftxtCelular.setText("");
+        ftxtDataNascimento.setText("");
+        ftxtRG.setText("");
+        ftxtTelefoneResidencial.setText("");
+        cmbSexo.setSelectedItem("");
+        cmbEstado.setSelectedItem("");
+        cmbEstadoCivil.setSelectedItem("");
+        cmbEscolaridade.setSelectedItem("");
+
+    
+        ftxtCPF.setEnabled(true);
+        txtNome.setEnabled(false);
+        ftxtCPF.requestFocus();
+        txtBairro.setEnabled(false);
+        txtCidade.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtEndereco.setEnabled(false);
+        ftxtRG.setEnabled(false);
+        cmbEscolaridade.setEnabled(false);
+        txtNumero.setEnabled(false);
+        cmbSexo.setEnabled(false);
+        cmbEstado.setEnabled(false);
+        cmbEstadoCivil.setEnabled(false);
+        ftxtCEP.setEnabled(false);
+        ftxtCelular.setEnabled(false);
+        ftxtDataNascimento.setEnabled(false);
+        ftxtTelefoneResidencial.setEnabled(false);
+        
+       
+        btnConsultar.setEnabled(true);
+        btnInserir.setEnabled(false);
+        btnAlterar.setEnabled(false);
+        btnExcluir.setEnabled(false);
         
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
          conexao = new Conexao("BD1711015","BD1711015");
-        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver"); 
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoAluno = new DaoAluno(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+    dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSairActionPerformed
 
     /**
      * @param args the command line arguments
