@@ -62,11 +62,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Alocar Instrutor"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAlocarInstrutorActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemEfetuarMatricula">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Efetuar Matricula"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemEfetuarMatriculaActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
