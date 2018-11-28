@@ -416,10 +416,10 @@ public class Gui_Aluno extends javax.swing.JFrame {
                 btnAlterar.setEnabled(false);
                 btnExcluir.setEnabled(false);
             } else {
-                if (aluno.getCpf().length() == 11 && aluno.getEscolaridade() == null){
+                /*if (aluno.getEscolaridade() == null){
                     JOptionPane.showMessageDialog(null, "CPF Inválido para cadastro! Já cadastrado como instrutor.");
                     return;
-                }
+                }*/
                 txtNome.setText(aluno.getNome());
                 txtEndereco.setText(aluno.getEndereco());
                 txtBairro.setText(aluno.getBairro());

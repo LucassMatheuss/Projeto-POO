@@ -392,10 +392,10 @@ public class Gui_Instrutor extends javax.swing.JFrame {
                 btnAlterar.setEnabled(false);
                 btnExcluir.setEnabled(false);
             } else {
-                if (instrutor.getCpf().length() == 11 && instrutor.getAreaAtuacao() == null){
+                /*if (instrutor.getAreaAtuacao() == null){
                     JOptionPane.showMessageDialog(null, "CPF Inválido para cadastro! Já cadastrado como aluno.");
                     return;
-                }
+                }*/
                 txtNome.setText(instrutor.getNome());
                 txtEndereco.setText(instrutor.getEndereco());
                 txtBairro.setText(instrutor.getBairro());
