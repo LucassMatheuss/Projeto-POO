@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import fatec.poo.model.Curso;
 import fatec.poo.model.Turma;
+import java.util.ArrayList;
 /**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
@@ -87,4 +88,25 @@ public class DaoTurma {
             System.out.println(ex.toString());
         }
     }
+    
+    //PARTE NOVA TRAB 4
+    
+    public ArrayList<String> listar (Curso curso) {
+        ArrayList<String> Turmas = new ArrayList<>();
+        PreparedStatement ps = null;
+        try {//Verificar se funciona essa Query para listar o nome da turma relacionada ao curso)
+            ps = connection.prepareStatement("SELECT Sigla FROM poo_Turma WHERE siglaCurso = ? ");
+            ps.setString(1, curso.getSigla());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Turmas.add(rs.getString("Sigla"));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return Turmas;
+    }
+    
+    
+    
 }

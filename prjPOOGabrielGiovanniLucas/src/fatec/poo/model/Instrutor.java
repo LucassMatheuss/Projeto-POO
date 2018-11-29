@@ -33,4 +33,11 @@ public class Instrutor extends Pessoa{
         turmas.add(t);
         t.setInstrutor(this);
     }
+    
+    
+    //TESTAR SE ISSO FUNCIONA!!!
+    public void removeTurma (Turma t){
+    
+        turmas.remove(t);
+    }
 }

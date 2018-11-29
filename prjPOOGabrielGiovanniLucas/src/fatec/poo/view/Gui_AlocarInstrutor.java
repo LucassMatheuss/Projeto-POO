@@ -5,6 +5,15 @@
  */
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoInstrutor;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.Curso;
+import fatec.poo.model.Instrutor;
+import fatec.poo.model.Turma;
+import java.util.ArrayList;
+
 /**
  *
  * @author Gabriel Pilan
@@ -41,6 +50,11 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alocar Instrutor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Curso");
 
@@ -56,7 +70,14 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
             }
         });
 
+        cmbTurma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTurmaActionPerformed(evt);
+            }
+        });
+
         txtSituacao.setEditable(false);
+        txtSituacao.setBackground(new java.awt.Color(153, 153, 153));
         txtSituacao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         txtSituacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,9 +87,15 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
         btnAlocar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
         btnAlocar.setText("Alocar");
+        btnAlocar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlocarActionPerformed(evt);
+            }
+        });
 
         btnLiberar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnLiberar.setText("Liberar");
+        btnLiberar.setEnabled(false);
         btnLiberar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLiberarActionPerformed(evt);
@@ -159,7 +186,21 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSituacaoActionPerformed
 
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
-        // TODO add your handling code here:
+        //Testar se isso funciona
+        turma = (Turma) cmbTurma.getSelectedItem(); 
+        instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
+        
+        instrutor.removeTurma(turma); //remover a turma do instrutor
+        turma.setInstrutor(null);  //TESTAR SE ISSO FUNCIONA
+        
+        daoTurma.alterar(turma); //Armazenando a turma sem Instrutor
+        
+        txtSituacao.setText("LIBERADA");
+        btnAlocar.setEnabled(true);
+        btnLiberar.setEnabled(false);
+        
+        
+        
     }//GEN-LAST:event_btnLiberarActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
@@ -167,8 +208,80 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSairActionPerformed
 
     private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
-        // TODO add your handling code here:
+        //Para toda vez que for alterado o Curso trocar as Turmas Relacionadas
+        ArrayList<String> array = daoCurso.listar();
+            
+        for(int i = 0;i<array.size(); i++ ){  
+           cmbCurso.addItem(array.get(i).toString());   
+        } 
+        
+        ArrayList<String> arrayTurma = daoTurma.listar(curso); // Lista a Turma baseada no Curso Escolhido
+        
+        for(int i = 0;i<array.size(); i++ ){  
+           cmbTurma.addItem(array.get(i).toString());   
+        } 
     }//GEN-LAST:event_cmbCursoActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+        conexao = new Conexao("BD1711015","BD1711015");    
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        daoCurso = new DaoCurso(conexao.conectar());
+        daoTurma = new DaoTurma(conexao.conectar());
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
+        
+        ArrayList<String> array = daoCurso.listar();
+            
+        for(int i = 0;i<array.size(); i++ ){  
+           cmbCurso.addItem(array.get(i).toString());   
+        } 
+        
+        ArrayList<String> arrayTurma = daoTurma.listar(curso); // Lista a Turma baseada no Curso Escolhido
+        
+        for(int i = 0;i<array.size(); i++ ){  
+           cmbTurma.addItem(array.get(i).toString());    
+        } 
+        
+        ArrayList<String> arrayInstrutor = daoInstrutor.listar();
+        
+        for(int i = 0;i<arrayInstrutor.size(); i++ ){  
+           cmbInstrutor.addItem(arrayInstrutor.get(i).toString());   
+        } 
+        
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
+        //TESTAR SE ISSO FUNCIONA!!!!
+        turma = (Turma) cmbTurma.getSelectedItem();
+        instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
+        
+        instrutor.addTurma(turma);
+        turma.setInstrutor(instrutor); 
+        
+        daoTurma.alterar(turma); //Armazenando a turma com o novo Instrutor
+        
+        txtSituacao.setText("ALOCADA");
+        btnAlocar.setEnabled(false);
+        btnLiberar.setEnabled(true);
+        
+        
+    }//GEN-LAST:event_btnAlocarActionPerformed
+
+    private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
+        turma = (Turma) cmbTurma.getSelectedItem();
+        if(turma.getInstrutor() != null){
+            
+            instrutor = turma.getInstrutor(); 
+            cmbInstrutor.setSelectedItem(instrutor); // colocar esse objeto na combo box de Instrutor
+            
+            
+            txtSituacao.setText("ALOCADA");
+            btnAlocar.setEnabled(false);
+            btnLiberar.setEnabled(true);
+        }
+    }//GEN-LAST:event_cmbTurmaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -218,4 +331,12 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JTextField txtSituacao;
     // End of variables declaration//GEN-END:variables
+
+    private Conexao conexao = null;
+    private DaoCurso daoCurso = null;
+    private DaoInstrutor daoInstrutor = null;
+    private DaoTurma daoTurma = null;
+    private Curso curso = null;
+    private Turma turma = null;
+    private Instrutor instrutor = null;
 }
