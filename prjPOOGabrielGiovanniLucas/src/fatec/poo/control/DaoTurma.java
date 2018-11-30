@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import fatec.poo.model.Curso;
+import fatec.poo.model.Instrutor;
 import fatec.poo.model.Turma;
 import java.util.ArrayList;
 /**
@@ -54,9 +55,39 @@ public class DaoTurma {
         }
     }
     
+    public void alocarInstrutor (String cpf , Turma turma){
+    PreparedStatement ps = null;
+    try {
+                      
+            ps = connection.prepareStatement("UPDATE poo_Turma SET CPF_INSTRUTOR = ? WHERE siglaTurma = ?");
+            ps.setString(1, cpf);
+            ps.setString(2, turma.getSiglaTurma()); 
+            ps.execute();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    
+    }
+    
+    public void desalocarInstrutor (String cpf , Turma turma){
+    PreparedStatement ps = null;
+    try {
+                      
+            ps = connection.prepareStatement("UPDATE poo_Turma SET CPF_INSTRUTOR = ? WHERE siglaTurma = ?");
+            ps.setString(1, null);
+            ps.setString(2, turma.getSiglaTurma()); 
+            ps.execute();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+    
+    }
+    
+    
     public Turma consultar (String siglaTurma){
         Turma turma = null;
         Curso curso = null;
+        Instrutor instrutor = null;
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("SELECT * FROM poo_Turma WHERE siglaTurma = ?");
@@ -69,6 +100,8 @@ public class DaoTurma {
                 turma.setPeriodo(rs.getString("periodo"));
                 turma.setObservacoes(rs.getString("observacoes"));
                 turma.setQtdeVagas(rs.getInt("qtdeVagas"));
+                instrutor = new DaoInstrutor(connection).consultar(rs.getString("CPF_INSTRUTOR"));
+                turma.setInstrutor(instrutor);
                 curso = new DaoCurso(connection).consultar(rs.getString("siglaCurso")); 
                 curso.addTurmas(turma);
             }
@@ -91,15 +124,15 @@ public class DaoTurma {
     
     //PARTE NOVA TRAB 4
     
-    public ArrayList<String> listar (Curso curso) {
+    public ArrayList<String> listar (String curso) {
         ArrayList<String> Turmas = new ArrayList<>();
         PreparedStatement ps = null;
         try {//Verificar se funciona essa Query para listar o nome da turma relacionada ao curso)
-            ps = connection.prepareStatement("SELECT Sigla FROM poo_Turma WHERE siglaCurso = ? ");
-            ps.setString(1, curso.getSigla());
+            ps = connection.prepareStatement("SELECT SiglaTurma FROM poo_Turma WHERE siglaCurso = ? ");
+            ps.setString(1, curso);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                Turmas.add(rs.getString("Sigla"));
+                Turmas.add(rs.getString("SiglaTurma"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

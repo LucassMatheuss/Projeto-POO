@@ -12,6 +12,8 @@ import fatec.poo.control.DaoTurma;
 import fatec.poo.model.Curso;
 import fatec.poo.model.Instrutor;
 import fatec.poo.model.Turma;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -50,6 +52,16 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Alocar Instrutor");
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                formMouseEntered(evt);
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -70,6 +82,49 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
             }
         });
 
+        cmbTurma.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbTurmaItemStateChanged(evt);
+            }
+        });
+        cmbTurma.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+                cmbTurmaAncestorMoved(evt);
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        cmbTurma.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                cmbTurmaMouseMoved(evt);
+            }
+        });
+        cmbTurma.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cmbTurmaFocusGained(evt);
+            }
+        });
+        cmbTurma.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbTurmaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cmbTurmaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cmbTurmaMouseExited(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                cmbTurmaMouseReleased(evt);
+            }
+        });
+        cmbTurma.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentMoved(java.awt.event.ComponentEvent evt) {
+                cmbTurmaComponentMoved(evt);
+            }
+        });
         cmbTurma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTurmaActionPerformed(evt);
@@ -78,7 +133,7 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
         txtSituacao.setEditable(false);
         txtSituacao.setBackground(new java.awt.Color(153, 153, 153));
-        txtSituacao.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        txtSituacao.setBorder(javax.swing.BorderFactory.createBevelBorder(1));
         txtSituacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSituacaoActionPerformed(evt);
@@ -187,13 +242,24 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
         //Testar se isso funciona
-        turma = (Turma) cmbTurma.getSelectedItem(); 
-        instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
+        
+        
+        
+        
+        turmaSigla = (String) cmbTurma.getSelectedItem();
+        //instrutorNome = (String) cmbInstrutor.getSelectedItem(); 
+        
+        turma = daoTurma.consultar(turmaSigla); 
+        
+        instrutor = arrayInstrutor.get(cmbInstrutor.getSelectedIndex());
+        //instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
+        
+        CPF = instrutor.getCpf();
         
         instrutor.removeTurma(turma); //remover a turma do instrutor
         turma.setInstrutor(null);  //TESTAR SE ISSO FUNCIONA
         
-        daoTurma.alterar(turma); //Armazenando a turma sem Instrutor
+        daoTurma.desalocarInstrutor(CPF, turma); //Armazenando a turma sem Instrutor
         
         txtSituacao.setText("LIBERADA");
         btnAlocar.setEnabled(true);
@@ -209,17 +275,47 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
     private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
         //Para toda vez que for alterado o Curso trocar as Turmas Relacionadas
-        ArrayList<String> array = daoCurso.listar();
+      /*  ArrayList<String> array = daoCurso.listar();
             
         for(int i = 0;i<array.size(); i++ ){  
            cmbCurso.addItem(array.get(i).toString());   
+        } */
+        cursoSigla = (String) cmbCurso.getSelectedItem();
+        ArrayList<String> arrayTurma = daoTurma.listar(cursoSigla); // Lista a Turma baseada no Curso Escolhido
+        cmbTurma.removeAllItems();
+        for(int i = 0;i<arrayTurma.size(); i++ ){  
+           cmbTurma.addItem(arrayTurma.get(i).toString());   
         } 
         
-        ArrayList<String> arrayTurma = daoTurma.listar(curso); // Lista a Turma baseada no Curso Escolhido
+        turmaSigla = (String) cmbTurma.getSelectedItem();
         
-        for(int i = 0;i<array.size(); i++ ){  
-           cmbTurma.addItem(array.get(i).toString());   
-        } 
+        
+        turma = daoTurma.consultar(turmaSigla);
+        
+        
+         
+         instrutor = turma.getInstrutor();
+         
+         if(instrutor == null){
+             System.out.println("Instrutor Nulo");
+         
+         txtSituacao.setText("TURMA SEM INSTRUTOR");
+            btnAlocar.setEnabled(true);
+            btnLiberar.setEnabled(false);
+         
+         }
+         
+        if(instrutor != null){
+            
+            System.out.println("Instrutor NAAAAAAAAO Nulo");
+            
+            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+            
+            
+            txtSituacao.setText("ALOCADA");
+            btnAlocar.setEnabled(false);
+            btnLiberar.setEnabled(true);
+        }
     }//GEN-LAST:event_cmbCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -237,51 +333,197 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
            cmbCurso.addItem(array.get(i).toString());   
         } 
         
-        ArrayList<String> arrayTurma = daoTurma.listar(curso); // Lista a Turma baseada no Curso Escolhido
+        cursoSigla = (String) cmbCurso.getSelectedItem();
         
-        for(int i = 0;i<array.size(); i++ ){  
-           cmbTurma.addItem(array.get(i).toString());    
+        ArrayList<String> arrayTurma = daoTurma.listar(cursoSigla); // Lista a Turma baseada no Curso Escolhido
+        
+        cmbTurma.removeAllItems();
+        for(int i = 0;i<arrayTurma.size(); i++ ){  
+            
+           cmbTurma.addItem(arrayTurma.get(i).toString());    
         } 
         
-        ArrayList<String> arrayInstrutor = daoInstrutor.listar();
+        arrayInstrutor = daoInstrutor.listar();
         
         for(int i = 0;i<arrayInstrutor.size(); i++ ){  
-           cmbInstrutor.addItem(arrayInstrutor.get(i).toString());   
+           cmbInstrutor.addItem(arrayInstrutor.get(i).getNome().toString());   
         } 
         
-        
-    }//GEN-LAST:event_formWindowOpened
-
-    private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
-        //TESTAR SE ISSO FUNCIONA!!!!
-        turma = (Turma) cmbTurma.getSelectedItem();
-        instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
-        
-        instrutor.addTurma(turma);
-        turma.setInstrutor(instrutor); 
-        
-        daoTurma.alterar(turma); //Armazenando a turma com o novo Instrutor
-        
-        txtSituacao.setText("ALOCADA");
-        btnAlocar.setEnabled(false);
-        btnLiberar.setEnabled(true);
+        //TALVEZ DELETAR DPS
+        turmaSigla = (String) cmbTurma.getSelectedItem();
         
         
-    }//GEN-LAST:event_btnAlocarActionPerformed
-
-    private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
-        turma = (Turma) cmbTurma.getSelectedItem();
-        if(turma.getInstrutor() != null){
+        turma = daoTurma.consultar(turmaSigla);
+        
+        
+         
+         instrutor = turma.getInstrutor();
+         
+         if(instrutor == null){
+             System.out.println("Instrutor Nulo");
+         
+         txtSituacao.setText("TURMA SEM INSTRUTOR");
+            btnAlocar.setEnabled(true);
+            btnLiberar.setEnabled(false);
+         
+         }
+         
+        if(instrutor != null){
             
-            instrutor = turma.getInstrutor(); 
-            cmbInstrutor.setSelectedItem(instrutor); // colocar esse objeto na combo box de Instrutor
+            System.out.println("Instrutor NAAAAAAAAO Nulo");
+            
+            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
             
             
             txtSituacao.setText("ALOCADA");
             btnAlocar.setEnabled(false);
             btnLiberar.setEnabled(true);
         }
+        
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnAlocarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlocarActionPerformed
+        //TESTAR SE ISSO FUNCIONA!!!!
+       
+        
+        turmaSigla = (String) cmbTurma.getSelectedItem();
+        //instrutorNome = (String) cmbInstrutor.getSelectedItem();
+        
+        turma = daoTurma.consultar(turmaSigla); 
+        
+        instrutor = arrayInstrutor.get(cmbInstrutor.getSelectedIndex());
+        //instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
+        
+        instrutor.addTurma(turma); 
+        
+        
+        
+        System.out.println(turma.getNome());
+        
+        System.out.println(instrutor.getNome());        
+        
+       turma.setInstrutor(instrutor);
+       
+       System.out.println(turma.getInstrutor().getNome());
+        
+        CPF = instrutor.getCpf();
+        daoTurma.alocarInstrutor(CPF, turma); //Armazenando a turma com o novo Instrutor no BD
+        
+        
+        
+        txtSituacao.setText("ALOCADA");
+        btnAlocar.setEnabled(false);
+        btnLiberar.setEnabled(true);
+        
+       
+        
+        
+    }//GEN-LAST:event_btnAlocarActionPerformed
+
+    private void cmbTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTurmaActionPerformed
+     
+     
     }//GEN-LAST:event_cmbTurmaActionPerformed
+
+    private void cmbTurmaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseClicked
+        turmaSigla = (String) cmbTurma.getSelectedItem();
+        
+        
+        turma = daoTurma.consultar(turmaSigla);
+        
+        
+         
+         instrutor = turma.getInstrutor();
+         
+         if(instrutor == null){
+             System.out.println("Instrutor Nulo");
+         
+         txtSituacao.setText("TURMA SEM INSTRUTOR");
+            btnAlocar.setEnabled(true);
+            btnLiberar.setEnabled(false);
+         
+         }
+         
+        if(instrutor != null){
+            
+            System.out.println("Instrutor NAAAAAAAAO Nulo");
+            
+            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+            
+            
+            txtSituacao.setText("ALOCADA");
+            btnAlocar.setEnabled(false);
+            btnLiberar.setEnabled(true);
+        }     
+    }//GEN-LAST:event_cmbTurmaMouseClicked
+
+    private void cmbTurmaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cmbTurmaFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTurmaFocusGained
+
+    private void cmbTurmaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTurmaItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTurmaItemStateChanged
+
+    private void cmbTurmaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseEntered
+turmaSigla = (String) cmbTurma.getSelectedItem();
+        
+        
+        turma = daoTurma.consultar(turmaSigla);
+        
+        
+         
+         instrutor = turma.getInstrutor();
+         
+         if(instrutor == null){
+             System.out.println("Instrutor Nulo");
+         
+         txtSituacao.setText("TURMA SEM INSTRUTOR");
+            btnAlocar.setEnabled(true);
+            btnLiberar.setEnabled(false);
+         
+         }
+         
+        if(instrutor != null){
+            
+            System.out.println("Instrutor NAAAAAAAAO Nulo");
+            
+            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+            
+            
+            txtSituacao.setText("ALOCADA");
+            btnAlocar.setEnabled(false);
+            btnLiberar.setEnabled(true);
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTurmaMouseEntered
+
+    private void cmbTurmaMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTurmaMouseMoved
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseMoved
+
+    private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formMouseEntered
+
+    private void cmbTurmaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseExited
+
+    }//GEN-LAST:event_cmbTurmaMouseExited
+
+    private void cmbTurmaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseReleased
+
+    }//GEN-LAST:event_cmbTurmaMouseReleased
+
+    private void cmbTurmaAncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_cmbTurmaAncestorMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTurmaAncestorMoved
+
+    private void cmbTurmaComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_cmbTurmaComponentMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTurmaComponentMoved
 
     /**
      * @param args the command line arguments
@@ -339,4 +581,9 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     private Curso curso = null;
     private Turma turma = null;
     private Instrutor instrutor = null;
+    private String cursoSigla = null;
+    private String turmaSigla = null;
+    private String instrutorNome = null;
+    private ArrayList<Instrutor> arrayInstrutor = null;
+    private String CPF = null;
 }
