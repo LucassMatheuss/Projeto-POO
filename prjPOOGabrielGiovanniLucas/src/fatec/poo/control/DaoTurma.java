@@ -22,16 +22,18 @@ public class DaoTurma {
     public void inserir (Turma turma){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO poo_Turma (siglaTurma, nome, dataInicio, "
-                    + "dataTermino, periodo, qtdeVagas, siglaCurso) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            ps = connection.prepareStatement("INSERT INTO poo_Turma (siglaTurma, cpfInstrutor, siglaCurso, nome, "
+                    + "dataInicio, dataTermino, periodo, qtdeVagas, observacoes) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, turma.getSiglaTurma());
-            ps.setString(2, turma.getNome());
-            ps.setString(3, turma.getDataInicio());
-            ps.setString(4, turma.getDataTermino());
-            ps.setString(5, turma.getPeriodo());
-            ps.setInt(6, turma.getQtdeVagas());
-            ps.setString(7, turma.getCurso().getSigla());
+            ps.setString(2, null);
+            ps.setString(3, turma.getCurso().getSigla());
+            ps.setString(4, turma.getNome());
+            ps.setString(5, turma.getDataInicio());
+            ps.setString(6, turma.getDataTermino());
+            ps.setString(7, turma.getPeriodo());
+            ps.setInt(8, turma.getQtdeVagas());
+            ps.setString(9, null);
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -57,32 +59,27 @@ public class DaoTurma {
     
     public void alocarInstrutor (String cpf , Turma turma){
     PreparedStatement ps = null;
-    try {
-                      
-            ps = connection.prepareStatement("UPDATE poo_Turma SET CPF_INSTRUTOR = ? WHERE siglaTurma = ?");
+    try {         
+            ps = connection.prepareStatement("UPDATE poo_Turma SET cpfInstrutor = ? WHERE siglaTurma = ?");
             ps.setString(1, cpf);
             ps.setString(2, turma.getSiglaTurma()); 
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-    
     }
     
     public void desalocarInstrutor (String cpf , Turma turma){
     PreparedStatement ps = null;
-    try {
-                      
-            ps = connection.prepareStatement("UPDATE poo_Turma SET CPF_INSTRUTOR = ? WHERE siglaTurma = ?");
+    try {        
+            ps = connection.prepareStatement("UPDATE poo_Turma SET cpfInstrutor = ? WHERE siglaTurma = ?");
             ps.setString(1, null);
             ps.setString(2, turma.getSiglaTurma()); 
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
-    
     }
-    
     
     public Turma consultar (String siglaTurma){
         Turma turma = null;
@@ -98,9 +95,9 @@ public class DaoTurma {
                 turma.setDataInicio(rs.getString("dataInicio"));
                 turma.setDataTermino(rs.getString("dataTermino"));
                 turma.setPeriodo(rs.getString("periodo"));
-                turma.setObservacoes(rs.getString("observacoes"));
                 turma.setQtdeVagas(rs.getInt("qtdeVagas"));
-                instrutor = new DaoInstrutor(connection).consultar(rs.getString("CPF_INSTRUTOR"));
+                turma.setObservacoes(rs.getString("observacoes"));
+                instrutor = new DaoInstrutor(connection).consultar(rs.getString("cpfInstrutor"));
                 turma.setInstrutor(instrutor);
                 curso = new DaoCurso(connection).consultar(rs.getString("siglaCurso")); 
                 curso.addTurmas(turma);
@@ -122,12 +119,10 @@ public class DaoTurma {
         }
     }
     
-    //PARTE NOVA TRAB 4
-    
     public ArrayList<String> listar (String curso) {
         ArrayList<String> Turmas = new ArrayList<>();
         PreparedStatement ps = null;
-        try {//Verificar se funciona essa Query para listar o nome da turma relacionada ao curso)
+        try {
             ps = connection.prepareStatement("SELECT SiglaTurma FROM poo_Turma WHERE siglaCurso = ? ");
             ps.setString(1, curso);
             ResultSet rs = ps.executeQuery();
@@ -139,7 +134,4 @@ public class DaoTurma {
         }
         return Turmas;
     }
-    
-    
-    
 }

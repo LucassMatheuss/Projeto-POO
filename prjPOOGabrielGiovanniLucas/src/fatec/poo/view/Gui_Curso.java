@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
 import fatec.poo.control.DaoCurso;
 import fatec.poo.model.Curso;
 import javax.swing.JOptionPane;
+
 /**
  *
- * @author Lucas M
+ * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Gui_Curso extends javax.swing.JFrame {
 
@@ -221,8 +217,8 @@ public class Gui_Curso extends javax.swing.JFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         curso = null;
         curso = daoCurso.consultar(txtSiglaCurso.getText());
-        
-        if (curso == null){
+
+        if (curso == null) {
             txtSiglaCurso.setEnabled(false);
             txtNomeCurso.setEnabled(true);
             txtNomeCurso.requestFocus();
@@ -237,8 +233,7 @@ public class Gui_Curso extends javax.swing.JFrame {
             btnInserir.setEnabled(true);
             btnAlterar.setEnabled(false);
             btnExcluir.setEnabled(false);
-        }
-        else{
+        } else {
             txtNomeCurso.setText(curso.getNome());
             txtCargaHoraria.setText(Integer.toString(curso.getCargaHoraria()));
             ftxtDataVigencia.setText(curso.getDataVigencia());
@@ -246,8 +241,7 @@ public class Gui_Curso extends javax.swing.JFrame {
             txtValorHoraInstrutor.setText(Double.toString(curso.getValorHoraInstrutor()));
             txtProgramaCurso.setText(curso.getPrograma());
 
-
-            txtSiglaCurso.setEnabled(false); 
+            txtSiglaCurso.setEnabled(false);
             txtNomeCurso.setEnabled(true);
             txtNomeCurso.requestFocus();
             txtCargaHoraria.setEnabled(true);
@@ -259,81 +253,81 @@ public class Gui_Curso extends javax.swing.JFrame {
             btnConsultar.setEnabled(false);
             btnInserir.setEnabled(false);
             btnAlterar.setEnabled(true);
-            btnExcluir.setEnabled(true); 
+            btnExcluir.setEnabled(true);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1711015","BD1711015");  
+        conexao = new Conexao("BD1711015", "BD1711015");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoCurso = new DaoCurso(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        curso = new Curso(txtSiglaCurso.getText(),txtNomeCurso.getText());
-        
+        curso = new Curso(txtSiglaCurso.getText(), txtNomeCurso.getText());
+
         curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
         curso.setDataVigencia(ftxtDataVigencia.getText().replace("/", ""));
         curso.setValor(Double.parseDouble(txtValorCurso.getText()));
         curso.setValorHoraInstrutor(Double.parseDouble(txtValorHoraInstrutor.getText()));
         curso.setPrograma(txtProgramaCurso.getText());
-        
+
         daoCurso.inserir(curso);
-        
+
         txtSiglaCurso.setText("");
-        txtNomeCurso.setText("");    
-        txtCargaHoraria.setText("");  
-        ftxtDataVigencia.setText("");  
-        txtValorCurso.setText("");  
-        txtValorHoraInstrutor.setText("");  
-        txtProgramaCurso.setText("");  
-        
+        txtNomeCurso.setText("");
+        txtCargaHoraria.setText("");
+        ftxtDataVigencia.setText("");
+        txtValorCurso.setText("");
+        txtValorHoraInstrutor.setText("");
+        txtProgramaCurso.setText("");
+
         btnInserir.setEnabled(false);
-        
+
         txtSiglaCurso.setEnabled(true);
         txtSiglaCurso.requestFocus();
-        
+
         txtNomeCurso.setEnabled(false);
         txtCargaHoraria.setEnabled(false);
         ftxtDataVigencia.setEnabled(false);
         txtValorCurso.setEnabled(false);
         txtValorHoraInstrutor.setEnabled(false);
         txtProgramaCurso.setEnabled(false);
-        
+
         btnConsultar.setEnabled(true);
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){//Sim
-           curso.setNome(txtNomeCurso.getText());
-           curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
-           curso.setDataVigencia(ftxtDataVigencia.getText().replace("/", ""));
-           curso.setValor(Double.parseDouble(txtValorCurso.getText()));
-           curso.setValorHoraInstrutor(Double.parseDouble(txtValorHoraInstrutor.getText()));
-           curso.setPrograma(txtProgramaCurso.getText());
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {//Sim
+            curso.setNome(txtNomeCurso.getText());
+            curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+            curso.setDataVigencia(ftxtDataVigencia.getText().replace("/", ""));
+            curso.setValor(Double.parseDouble(txtValorCurso.getText()));
+            curso.setValorHoraInstrutor(Double.parseDouble(txtValorHoraInstrutor.getText()));
+            curso.setPrograma(txtProgramaCurso.getText());
 
-           daoCurso.alterar(curso);
-        } 
-        
+            daoCurso.alterar(curso);
+        }
+
         txtSiglaCurso.setText("");
-        txtNomeCurso.setText("");    
-        txtCargaHoraria.setText("");  
-        ftxtDataVigencia.setText("");  
-        txtValorCurso.setText("");  
-        txtValorHoraInstrutor.setText("");  
-        txtProgramaCurso.setText("");  
-        
-        txtSiglaCurso.setEnabled(true); 
+        txtNomeCurso.setText("");
+        txtCargaHoraria.setText("");
+        ftxtDataVigencia.setText("");
+        txtValorCurso.setText("");
+        txtValorHoraInstrutor.setText("");
+        txtProgramaCurso.setText("");
+
+        txtSiglaCurso.setEnabled(true);
         txtSiglaCurso.requestFocus();
-        
+
         txtNomeCurso.setEnabled(false);
         txtCargaHoraria.setEnabled(false);
         ftxtDataVigencia.setEnabled(false);
         txtValorCurso.setEnabled(false);
         txtValorHoraInstrutor.setEnabled(false);
         txtProgramaCurso.setEnabled(false);
-        
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
         btnAlterar.setEnabled(false);
@@ -341,19 +335,19 @@ public class Gui_Curso extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Exclusão?") == 0) {
             daoCurso.excluir(curso);
         }
-       
-        txtSiglaCurso.setText("");
-        txtNomeCurso.setText("");    
-        txtCargaHoraria.setText("");  
-        ftxtDataVigencia.setText("");  
-        txtValorCurso.setText("");  
-        txtValorHoraInstrutor.setText("");  
-        txtProgramaCurso.setText("");  
 
-        txtSiglaCurso.setEnabled(true); 
+        txtSiglaCurso.setText("");
+        txtNomeCurso.setText("");
+        txtCargaHoraria.setText("");
+        ftxtDataVigencia.setText("");
+        txtValorCurso.setText("");
+        txtValorHoraInstrutor.setText("");
+        txtProgramaCurso.setText("");
+
+        txtSiglaCurso.setEnabled(true);
         txtSiglaCurso.requestFocus();
 
         txtNomeCurso.setEnabled(false);
@@ -429,8 +423,8 @@ public class Gui_Curso extends javax.swing.JFrame {
     private javax.swing.JTextField txtValorCurso;
     private javax.swing.JTextField txtValorHoraInstrutor;
     // End of variables declaration//GEN-END:variables
-    
+
     private DaoCurso daoCurso = null;
-    private Curso curso=null;
+    private Curso curso = null;
     private Conexao conexao = null;
 }

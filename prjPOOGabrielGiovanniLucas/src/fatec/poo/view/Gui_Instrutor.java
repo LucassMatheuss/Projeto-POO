@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
@@ -10,17 +5,20 @@ import fatec.poo.control.DaoInstrutor;
 import fatec.poo.model.Instrutor;
 import javax.swing.JOptionPane;
 import fatec.poo.model.Pessoa;
+
 /**
  *
- * @author Giovanni
+ * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Gui_Instrutor extends javax.swing.JFrame {
+
     /**
      * Creates new form Gui_Instrutor
      */
     public Gui_Instrutor() {
         initComponents();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -367,17 +365,17 @@ public class Gui_Instrutor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1711015","BD1711015");    
+        conexao = new Conexao("BD1711015", "BD1711015");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
-        daoInstrutor = new DaoInstrutor(conexao.conectar()); 
+        daoInstrutor = new DaoInstrutor(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         String cpf = ftxtCPF.getText().replace(".", "").replace("-", "");
         cpf = cpf.replaceAll("\\D", "");
         if (!Pessoa.validarCPF(cpf)) {
-            try { 
+            try {
                 throw new Exception("CPF é inválido!");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -418,7 +416,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
                 btnAlterar.setEnabled(true);
                 btnExcluir.setEnabled(true);
             }
-            
+
             ftxtCPF.setEnabled(false);
             txtNome.setEnabled(true);
             txtNome.requestFocus();
@@ -443,7 +441,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         instrutor = new Instrutor(ftxtCPF.getText(), txtNome.getText());
-        
+
         instrutor.setCpf(ftxtCPF.getText().replace(".", "").replace("-", ""));
         instrutor.setNome(txtNome.getText());
         instrutor.setBairro(txtBairro.getText());
@@ -463,7 +461,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         instrutor.setEstadoCivil((String) cmbEstadoCivil.getSelectedItem());
 
         daoInstrutor.inserir(instrutor);
-        
+
         ftxtCPF.setText("");
         txtNome.setText("");
         txtBairro.setText("");
@@ -481,7 +479,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         cmbSexo.setSelectedItem("");
         cmbEstado.setSelectedItem("");
         cmbEstadoCivil.setSelectedItem("");
-        
+
         btnInserir.setEnabled(false);
 
         ftxtCPF.setEnabled(true);
@@ -502,13 +500,13 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         ftxtTelefone.setEnabled(false);
         txtEndereco.setEnabled(false);
         ftxtRG.setEnabled(false);
-        
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
             instrutor.setNome(txtNome.getText());
             instrutor.setBairro(txtBairro.getText());
             instrutor.setCep(ftxtCEP.getText().replace("-", ""));
@@ -528,7 +526,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
 
             daoInstrutor.alterar(instrutor);
         }
-        
+
         ftxtCPF.setText("");
         txtNome.setText("");
         txtBairro.setText("");
@@ -546,7 +544,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         cmbSexo.setSelectedItem("");
         cmbEstado.setSelectedItem("");
         cmbEstadoCivil.setSelectedItem("");
-        
+
         ftxtCPF.setEnabled(true);
         txtNome.setEnabled(false);
         ftxtCPF.requestFocus();
@@ -573,10 +571,10 @@ public class Gui_Instrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
             daoInstrutor.excluir(instrutor);
         }
-        
+
         ftxtCPF.setText("");
         txtNome.setText("");
         txtBairro.setText("");
@@ -594,7 +592,7 @@ public class Gui_Instrutor extends javax.swing.JFrame {
         cmbSexo.setSelectedItem("");
         cmbEstado.setSelectedItem("");
         cmbEstadoCivil.setSelectedItem("");
-        
+
         ftxtCPF.setEnabled(true);
         txtNome.setEnabled(false);
         ftxtCPF.requestFocus();

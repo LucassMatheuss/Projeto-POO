@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Gabriel Pilan
+ * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Gui_Aluno extends javax.swing.JFrame {
 
@@ -410,7 +410,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
             ftxtDataNascimento.setEnabled(true);
             ftxtTelefoneResidencial.setEnabled(true);
 
-            if (aluno == null) {                     
+            if (aluno == null) {
                 btnConsultar.setEnabled(false);
                 btnInserir.setEnabled(true);
                 btnAlterar.setEnabled(false);
@@ -434,8 +434,8 @@ public class Gui_Aluno extends javax.swing.JFrame {
                 cmbSexo.setSelectedItem(aluno.getSexo());
                 cmbEstado.setSelectedItem(aluno.getEstado());
                 cmbEstadoCivil.setSelectedItem(aluno.getEstadoCivil());
-                cmbEscolaridade.setSelectedItem(aluno.getEscolaridade());   
-                
+                cmbEscolaridade.setSelectedItem(aluno.getEscolaridade());
+
                 btnConsultar.setEnabled(false);
                 btnInserir.setEnabled(false);
                 btnAlterar.setEnabled(true);
@@ -465,7 +465,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
         aluno.setEscolaridade((String) cmbEscolaridade.getSelectedItem());
 
         daoAluno.inserir(aluno);
-        
+
         ftxtCPF.setText("");
         txtNome.setText("");
         txtBairro.setText("");
@@ -482,8 +482,8 @@ public class Gui_Aluno extends javax.swing.JFrame {
         cmbEstado.setSelectedItem("");
         cmbEstadoCivil.setSelectedItem("");
         cmbEscolaridade.setSelectedItem("");
-        
-         btnInserir.setEnabled(false);
+
+        btnInserir.setEnabled(false);
 
         ftxtCPF.setEnabled(true);
         txtNome.setEnabled(false);
@@ -502,13 +502,13 @@ public class Gui_Aluno extends javax.swing.JFrame {
         ftxtCelular.setEnabled(false);
         ftxtDataNascimento.setEnabled(false);
         ftxtTelefoneResidencial.setEnabled(false);
-        
+
         btnConsultar.setEnabled(true);
 
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
             aluno.setCpf(ftxtCPF.getText().replace(".", "").replace("-", ""));
             aluno.setNome(txtNome.getText());
             aluno.setBairro(txtBairro.getText());
@@ -528,7 +528,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
 
             daoAluno.alterar(aluno);
         }
-        
+
         ftxtCPF.setText("");
         txtNome.setText("");
         txtBairro.setText("");
@@ -545,7 +545,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
         cmbEstado.setSelectedItem("");
         cmbEstadoCivil.setSelectedItem("");
         cmbEscolaridade.setSelectedItem("");
-        
+
         ftxtCPF.setEnabled(true);
         txtNome.setEnabled(false);
         ftxtCPF.requestFocus();
@@ -563,8 +563,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
         ftxtCelular.setEnabled(false);
         ftxtDataNascimento.setEnabled(false);
         ftxtTelefoneResidencial.setEnabled(false);
-        
-        
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
         btnAlterar.setEnabled(false);
@@ -572,10 +571,10 @@ public class Gui_Aluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
             daoAluno.excluir(aluno);
         }
-    
+
         ftxtCPF.setText("");
         txtNome.setText("");
         txtBairro.setText("");
@@ -593,7 +592,6 @@ public class Gui_Aluno extends javax.swing.JFrame {
         cmbEstadoCivil.setSelectedItem("");
         cmbEscolaridade.setSelectedItem("");
 
-    
         ftxtCPF.setEnabled(true);
         txtNome.setEnabled(false);
         ftxtCPF.requestFocus();
@@ -611,8 +609,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
         ftxtCelular.setEnabled(false);
         ftxtDataNascimento.setEnabled(false);
         ftxtTelefoneResidencial.setEnabled(false);
-        
-       
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
         btnAlterar.setEnabled(false);
@@ -620,8 +617,8 @@ public class Gui_Aluno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1711015","BD1711015");   
-        conexao.setDriver("oracle.jdbc.driver.OracleDriver"); 
+        conexao = new Conexao("BD1711015", "BD1711015");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoAluno = new DaoAluno(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
@@ -705,7 +702,7 @@ public class Gui_Aluno extends javax.swing.JFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtNumero;
     // End of variables declaration//GEN-END:variables
-    
+
     private Aluno aluno = null;
     private DaoAluno daoAluno = null;
     private Conexao conexao = null;

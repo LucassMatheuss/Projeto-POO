@@ -21,24 +21,24 @@ public class DaoPessoa {
     public void inserir (Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO poo_Pessoa (nome, dataNasc, endereco, bairro, cidade, estado, " +
-                    "cep, telefone, celular, sexo, estadoCivil, rg, cpf, email, numero) " +
+            ps = connection.prepareStatement("INSERT INTO poo_Pessoa (cpf, nome, dataNasc, numero, endereco, bairro, cidade, estado, " +
+                    "cep, telefone, celular, sexo, estadoCivil, rg, email) " +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, pessoa.getNome());
-            ps.setString(2, pessoa.getDataNasc());
-            ps.setString(3, pessoa.getEndereco());
-            ps.setString(4, pessoa.getBairro());
-            ps.setString(5, pessoa.getCidade());
-            ps.setString(6, pessoa.getEstado());
-            ps.setString(7, pessoa.getCep());
-            ps.setString(8, pessoa.getTelefone());
-            ps.setString(9, pessoa.getCelular());
-            ps.setString(10, pessoa.getSexo());
-            ps.setString(11, pessoa.getEstadoCivil());
-            ps.setString(12, pessoa.getRg());
-            ps.setString(13, pessoa.getCpf());
-            ps.setString(14, pessoa.getEmail());
-            ps.setInt(15, pessoa.getNumero());
+            ps.setString(1, pessoa.getCpf());
+            ps.setString(2, pessoa.getNome());
+            ps.setString(3, pessoa.getDataNasc());
+            ps.setString(4, pessoa.getEndereco());
+            ps.setInt(5, pessoa.getNumero());
+            ps.setString(6, pessoa.getBairro());
+            ps.setString(7, pessoa.getCidade());
+            ps.setString(8, pessoa.getEstado());
+            ps.setString(9, pessoa.getCep());
+            ps.setString(10, pessoa.getTelefone());
+            ps.setString(11, pessoa.getCelular());
+            ps.setString(12, pessoa.getSexo());
+            ps.setString(13, pessoa.getEstadoCivil());
+            ps.setString(14, pessoa.getRg());
+            ps.setString(15, pessoa.getEmail());
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
@@ -48,23 +48,23 @@ public class DaoPessoa {
     public void alterar(Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("UPDATE poo_Pessoa SET nome = ?, dataNasc = ?, endereco = ?, bairro = ?, " +
+            ps = connection.prepareStatement("UPDATE poo_Pessoa SET nome = ?, dataNasc = ?, endereco = ?, numero = ?, bairro = ?, " +
                     "cidade = ?, estado = ?, cep = ?, telefone = ?, celular = ?, sexo = ?, estadoCivil = ?, rg = ?, " +
-                    "email = ?, numero = ? WHERE cpf = ?"); 
+                    "email = ? WHERE cpf = ?"); 
             ps.setString(1, pessoa.getNome());
             ps.setString(2, pessoa.getDataNasc());
             ps.setString(3, pessoa.getEndereco());
-            ps.setString(4, pessoa.getBairro());
-            ps.setString(5, pessoa.getCidade());
-            ps.setString(6, pessoa.getEstado());
-            ps.setString(7, pessoa.getCep());
-            ps.setString(8, pessoa.getTelefone());
-            ps.setString(9, pessoa.getCelular());
-            ps.setString(10, pessoa.getSexo());
-            ps.setString(11, pessoa.getEstadoCivil());
-            ps.setString(12, pessoa.getRg());
-            ps.setString(13, pessoa.getEmail());
-            ps.setInt(14, pessoa.getNumero());
+            ps.setInt(4, pessoa.getNumero());
+            ps.setString(5, pessoa.getBairro());
+            ps.setString(6, pessoa.getCidade());
+            ps.setString(7, pessoa.getEstado());
+            ps.setString(8, pessoa.getCep());
+            ps.setString(9, pessoa.getTelefone());
+            ps.setString(10, pessoa.getCelular());
+            ps.setString(11, pessoa.getSexo());
+            ps.setString(12, pessoa.getEstadoCivil());
+            ps.setString(13, pessoa.getRg());
+            ps.setString(14, pessoa.getEmail());
             ps.setString(15, pessoa.getCpf());
             ps.execute();
         } catch (SQLException ex) {
@@ -86,6 +86,7 @@ public class DaoPessoa {
                     pessoa = new Instrutor(rs.getString("nome"), cpf);
                 pessoa.setDataNasc(rs.getString("dataNasc"));
                 pessoa.setEndereco(rs.getString("endereco"));
+                pessoa.setNumero(rs.getInt("numero"));
                 pessoa.setBairro(rs.getString("bairro"));
                 pessoa.setCidade(rs.getString("cidade"));
                 pessoa.setEstado(rs.getString("estado"));
@@ -97,7 +98,6 @@ public class DaoPessoa {
                 pessoa.setRg(rs.getString("rg"));
                 pessoa.setCpf(rs.getString("cpf"));
                 pessoa.setEmail(rs.getString("email"));
-                pessoa.setNumero(rs.getInt("numero"));
             }
         } catch (SQLException ex) { 
              System.out.println(ex.toString());

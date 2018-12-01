@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
 /**
  *
- * @author Gabriel Pilan
+ * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Gui_EfetuarMatricula extends javax.swing.JFrame {
 
@@ -335,7 +330,7 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
 
     private void rbAvistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbAvistaActionPerformed
         txtAgencia.setEnabled(true);
-        txtCheque.setEnabled(true); 
+        txtCheque.setEnabled(true);
         ftxtDataPagamento.setEnabled(true);
         txtMensalidade.setEnabled(false);
         txtTaxaJuros.setEnabled(false);

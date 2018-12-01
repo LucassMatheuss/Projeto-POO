@@ -7,7 +7,7 @@ package fatec.poo.view;
 
 /**
  *
- * @author 0030481711015
+ * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Gui_Menu extends javax.swing.JFrame {
 
@@ -124,7 +124,7 @@ public class Gui_Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemCursoActionPerformed
-         new Gui_Curso().setVisible(true);
+        new Gui_Curso().setVisible(true);
     }//GEN-LAST:event_jMenuItemCursoActionPerformed
 
     private void jMenuItemSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemSairActionPerformed
@@ -138,7 +138,7 @@ public class Gui_Menu extends javax.swing.JFrame {
     private void jMenuItemInstrutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemInstrutorActionPerformed
         new Gui_Instrutor().setVisible(true);
     }//GEN-LAST:event_jMenuItemInstrutorActionPerformed
-  
+
     private void jMenuItemTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTurmaActionPerformed
         new Gui_Turma().setVisible(true);
     }//GEN-LAST:event_jMenuItemTurmaActionPerformed

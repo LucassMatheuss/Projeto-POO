@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatec.poo.view;
 
 import fatec.poo.control.Conexao;
@@ -15,7 +10,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Lucas M
+ * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Gui_Turma extends javax.swing.JFrame {
 
@@ -25,6 +20,7 @@ public class Gui_Turma extends javax.swing.JFrame {
     public Gui_Turma() {
         initComponents();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -231,25 +227,25 @@ public class Gui_Turma extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         txtSiglaTurma.setEnabled(true);
-        
-        conexao = new Conexao("BD1711015","BD1711015");    
+
+        conexao = new Conexao("BD1711015", "BD1711015");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
-        
+
         ArrayList<String> array = daoCurso.listar();
-            
-        for(int i = 0;i<array.size(); i++ ){  
-           cmbCurso.addItem(array.get(i).toString());   
-        } 
+
+        for (int i = 0; i < array.size(); i++) {
+            cmbCurso.addItem(array.get(i).toString());
+        }
     }//GEN-LAST:event_formWindowOpened
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         turma = null;
         turma = daoTurma.consultar(txtSiglaTurma.getText());
-        
-        if(turma == null){
+
+        if (turma == null) {
             txtSiglaTurma.setEnabled(false);
             cmbCurso.setEnabled(false);
             txtNome.setEnabled(true);
@@ -264,56 +260,55 @@ public class Gui_Turma extends javax.swing.JFrame {
             btnInserir.setEnabled(true);
             btnAlterar.setEnabled(false);
             btnExcluir.setEnabled(false);
-        }
-        else{
+        } else {
             txtNome.setText(turma.getNome());
             txtQtdeVagas.setText(Integer.toString(turma.getQtdeVagas()));
             cmbPeriodo.setSelectedItem(turma.getPeriodo());
             ftxtDataInicio.setText(turma.getDataInicio());
             ftxtDataTermino.setText(turma.getDataTermino());
-            
+
             txtSiglaTurma.setEnabled(false);
             cmbCurso.setEnabled(false);
-            
+
             txtNome.setEnabled(true);
             txtNome.requestFocus();
             txtQtdeVagas.setEnabled(true);
             cmbPeriodo.setEnabled(true);
             ftxtDataInicio.setEnabled(true);
             ftxtDataTermino.setEnabled(true);
-            
+
             btnConsultar.setEnabled(false);
             btnInserir.setEnabled(false);
             btnAlterar.setEnabled(true);
-            btnExcluir.setEnabled(true); 
+            btnExcluir.setEnabled(true);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-        turma = new Turma (txtSiglaTurma.getText(),txtNome.getText());
+        turma = new Turma(txtSiglaTurma.getText(), txtNome.getText());
         Curso curso = daoCurso.consultar(cmbCurso.getSelectedItem().toString());
         curso.addTurmas(turma);
-        
+
         turma.setQtdeVagas(Integer.parseInt(txtQtdeVagas.getText()));
         turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
         turma.setDataInicio(ftxtDataInicio.getText().replace("/", ""));
         turma.setDataTermino(ftxtDataTermino.getText().replace("/", ""));
-        
+
         daoTurma.inserir(turma);
-        
+
         txtSiglaTurma.setText("");
         txtNome.setText("");
         txtQtdeVagas.setText("");
         cmbPeriodo.setSelectedItem("");
         ftxtDataInicio.setText("");
         ftxtDataTermino.setText("");
-        
+
         btnInserir.setEnabled(false);
-         
+
         txtSiglaTurma.setEnabled(true);
         cmbCurso.setEnabled(true);
         txtSiglaTurma.requestFocus();
-        
+
         txtNome.setEnabled(false);
         txtQtdeVagas.setEnabled(false);
         cmbPeriodo.setEnabled(false);
@@ -323,7 +318,7 @@ public class Gui_Turma extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?")== 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
             turma.setNome(txtNome.getText());
             turma.setQtdeVagas(Integer.parseInt(txtQtdeVagas.getText()));
             turma.setPeriodo(cmbPeriodo.getSelectedItem().toString());
@@ -332,24 +327,24 @@ public class Gui_Turma extends javax.swing.JFrame {
 
             daoTurma.alterar(turma);
         }
-        
+
         txtSiglaTurma.setText("");
         txtNome.setText("");
         txtQtdeVagas.setText("");
         cmbPeriodo.setSelectedItem("");  //Conferir se isso funciona
         ftxtDataInicio.setText("");
         ftxtDataTermino.setText("");
-        
+
         txtSiglaTurma.setEnabled(true);
         cmbCurso.setEnabled(true);
         txtSiglaTurma.requestFocus();
-        
+
         txtNome.setEnabled(false);
         txtQtdeVagas.setEnabled(false);
         cmbPeriodo.setEnabled(false);
         ftxtDataInicio.setEnabled(false);
         ftxtDataTermino.setEnabled(false);
-        
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
         btnAlterar.setEnabled(false);
@@ -357,27 +352,27 @@ public class Gui_Turma extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0){
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
             daoTurma.excluir(turma);
         }
-        
+
         txtSiglaTurma.setText("");
         txtNome.setText("");
         txtQtdeVagas.setText("");
         cmbPeriodo.setSelectedItem("");  //Conferir se isso funciona
         ftxtDataInicio.setText("");
         ftxtDataTermino.setText("");
-        
+
         txtSiglaTurma.setEnabled(true);
         cmbCurso.setEnabled(true);
         txtSiglaTurma.requestFocus();
-        
+
         txtNome.setEnabled(false);
         txtQtdeVagas.setEnabled(false);
         cmbPeriodo.setEnabled(false);
         ftxtDataInicio.setEnabled(false);
         ftxtDataTermino.setEnabled(false);
-        
+
         btnConsultar.setEnabled(true);
         btnInserir.setEnabled(false);
         btnAlterar.setEnabled(false);
@@ -385,7 +380,7 @@ public class Gui_Turma extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        dispose(); 
+        dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 
     /**
@@ -444,9 +439,9 @@ public class Gui_Turma extends javax.swing.JFrame {
     private javax.swing.JTextField txtQtdeVagas;
     private javax.swing.JTextField txtSiglaTurma;
     // End of variables declaration//GEN-END:variables
-    
+
     private DaoTurma daoTurma = null;
-    private Turma turma=null;
+    private Turma turma = null;
     private Conexao conexao = null;
     private DaoCurso daoCurso = null;
 }
