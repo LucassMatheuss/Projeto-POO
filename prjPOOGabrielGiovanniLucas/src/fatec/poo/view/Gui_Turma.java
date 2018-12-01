@@ -228,9 +228,11 @@ public class Gui_Turma extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         txtSiglaTurma.setEnabled(true);
 
-        conexao = new Conexao("BD1711015", "BD1711015");
+        //conexao = new Conexao("BD1711015", "BD1711015");
+        conexao = new Conexao("ZickkyG", "Gigio2025");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@127.0.0.1:1521:xe");
         daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
 

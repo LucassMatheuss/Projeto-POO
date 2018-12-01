@@ -21,7 +21,7 @@ public class DaoPessoa {
     public void inserir (Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO poo_Pessoa (cpf, nome, dataNasc, numero, endereco, bairro, cidade, estado, " +
+            ps = connection.prepareStatement("INSERT INTO poo_Pessoa (cpf, nome, dataNasc, endereco, numero, bairro, cidade, estado, " +
                     "cep, telefone, celular, sexo, estadoCivil, rg, email) " +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, pessoa.getCpf());
@@ -96,7 +96,6 @@ public class DaoPessoa {
                 pessoa.setSexo(rs.getString("sexo"));
                 pessoa.setEstadoCivil(rs.getString("estadoCivil"));
                 pessoa.setRg(rs.getString("rg"));
-                pessoa.setCpf(rs.getString("cpf"));
                 pessoa.setEmail(rs.getString("email"));
             }
         } catch (SQLException ex) { 

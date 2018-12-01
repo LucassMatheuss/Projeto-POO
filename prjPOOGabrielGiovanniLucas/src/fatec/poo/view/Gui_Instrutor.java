@@ -365,9 +365,11 @@ public class Gui_Instrutor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1711015", "BD1711015");
+        //conexao = new Conexao("BD1711015", "BD1711015");
+        conexao = new Conexao("ZickkyG", "Gigio2025");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@127.0.0.1:1521:xe");
         daoInstrutor = new DaoInstrutor(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
 

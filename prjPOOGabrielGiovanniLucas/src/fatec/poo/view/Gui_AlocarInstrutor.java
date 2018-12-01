@@ -223,9 +223,11 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbCursoActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        conexao = new Conexao("BD1711015", "BD1711015");
+        //conexao = new Conexao("BD1711015", "BD1711015");
+        conexao = new Conexao("ZickkyG", "Gigio2025");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
-        conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@127.0.0.1:1521:xe");
         daoCurso = new DaoCurso(conexao.conectar());
         daoTurma = new DaoTurma(conexao.conectar());
         daoInstrutor = new DaoInstrutor(conexao.conectar());
@@ -236,7 +238,7 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
             cmbCurso.addItem(arrayCurso.get(i).toString());
         }
         //Carrega Turmas
-        ArrayList<String> arrayTurma = daoTurma.listar((String) cmbCurso.getSelectedItem());
+        ArrayList<String> arrayTurma = daoTurma.listar((String)cmbCurso.getSelectedItem());
         for (int i = 0; i < arrayTurma.size(); i++) {
             cmbTurma.addItem(arrayTurma.get(i).toString());
         }
@@ -244,18 +246,14 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
         for (int i = 0; i < arrayInstrutor.size(); i++) {
             cmbInstrutor.addItem(arrayInstrutor.get(i).getNome().toString());
         }
-        //TALVEZ DELETAR DPS
         turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
-        instrutor = turma.getInstrutor();
-
-        if (instrutor == null) {
+        if (turma.getInstrutor() == null) {
             txtSituacao.setText("TURMA SEM INSTRUTOR");
             btnAlocar.setEnabled(true);
             btnLiberar.setEnabled(false);
         }
-
-        if (instrutor != null) {
-            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+        else {
+            cmbInstrutor.setSelectedItem(instrutor.getNome());
             txtSituacao.setText("ALOCADA");
             btnAlocar.setEnabled(false);
             btnLiberar.setEnabled(true);
