@@ -21,7 +21,7 @@ public class DaoCurso {
     public void inserir (Curso curso){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO poo_Curso(sigla, nome, cargaHoraria, "
+            ps = connection.prepareStatement("INSERT INTO POO_CURSO(sigla, nome, cargaHoraria, "
                     + "valor, dataVigencia, valorHoraInstrutor, programa) VALUES(?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, curso.getSigla());
             ps.setString(2, curso.getNome());
@@ -39,7 +39,7 @@ public class DaoCurso {
     public void alterar (Curso curso){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("UPDATE poo_Curso SET nome = ?, cargaHoraria = ?, valor = ?, "
+            ps = connection.prepareStatement("UPDATE POO_CURSO SET nome = ?, cargaHoraria = ?, valor = ?, "
                     + "dataVigencia = ?, valorHoraInstrutor = ?, programa = ? WHERE sigla = ?");
             ps.setString(1, curso.getNome());
             ps.setInt(2, curso.getCargaHoraria());
@@ -58,7 +58,7 @@ public class DaoCurso {
         Curso curso = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT * FROM poo_Curso where sigla = ?" );
+            ps = connection.prepareStatement("SELECT * FROM POO_CURSO where sigla = ?" );
             ps.setString(1, sigla);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -75,29 +75,35 @@ public class DaoCurso {
         return curso;
     }
     
-    public ArrayList<String> listar () {
-        ArrayList<String> cursos = new ArrayList<>();
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement("SELECT sigla FROM poo_Curso");
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                cursos.add(rs.getString("sigla"));
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
-        return cursos;
-    }
-    
     public void excluir (Curso curso){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("DELETE FROM poo_Curso WHERE sigla = ?");
+            ps = connection.prepareStatement("DELETE FROM POO_CURSO WHERE sigla = ?");
             ps.setString(1, curso.getSigla());
             ps.execute();
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
+    }
+    
+    public ArrayList<Curso> listar () {
+        ArrayList<Curso> cursos = new ArrayList<Curso>();
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("SELECT * FROM POO_CURSO");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+                Curso curso = new Curso(rs.getString("sigla"), rs.getString("nome"));
+                curso.setCargaHoraria(rs.getInt("cargaHoraria"));
+                curso.setValor(rs.getDouble("valor"));
+                curso.setDataVigencia(rs.getString("dataVigencia"));
+                curso.setValorHoraInstrutor(rs.getDouble("valorHoraInstrutor"));
+                curso.setPrograma(rs.getString("programa"));
+                cursos.add(curso);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return cursos;
     }
 }

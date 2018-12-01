@@ -179,7 +179,7 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     private void btnLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiberarActionPerformed
         //Testar se isso funciona
         turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
-        instrutor = arrayInstrutor.get(cmbInstrutor.getSelectedIndex());
+        Instrutor instrutor = arrayInstrutor.get(cmbInstrutor.getSelectedIndex());
 
         instrutor.removeTurma(turma); //remover a turma do instrutor
         turma.setInstrutor(null);  //TESTAR SE ISSO FUNCIONA
@@ -201,20 +201,17 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
             cmbTurma.addItem(arrayTurma.get(i).toString());
         }
         turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
-        instrutor = turma.getInstrutor();
-
-        if (instrutor == null) {
+        if (turma.getInstrutor() == null) {
             System.out.println("Instrutor Nulo");
 
             txtSituacao.setText("TURMA SEM INSTRUTOR");
             btnAlocar.setEnabled(true);
             btnLiberar.setEnabled(false);
         }
-
-        if (instrutor != null) {
+        else {
             System.out.println("Instrutor NAAAAAAAAO Nulo");
 
-            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+            cmbInstrutor.setSelectedItem(turma.getInstrutor().getNome()); // colocar esse objeto na combo box de Instrutor
 
             txtSituacao.setText("ALOCADA");
             btnAlocar.setEnabled(false);
@@ -233,15 +230,15 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
         daoInstrutor = new DaoInstrutor(conexao.conectar());
         arrayInstrutor = daoInstrutor.listar();
         //Carrega Cursos
-        ArrayList<String> arrayCurso = daoCurso.listar();
+        ArrayList<Curso> arrayCurso = daoCurso.listar();
         for (int i = 0; i < arrayCurso.size(); i++) {
-            cmbCurso.addItem(arrayCurso.get(i).toString());
+            cmbCurso.addItem(arrayCurso.get(i).getSigla());
         }
         //Carrega Turmas
-        ArrayList<String> arrayTurma = daoTurma.listar((String)cmbCurso.getSelectedItem());
+        /*ArrayList<String> arrayTurma = daoTurma.listar((String)cmbCurso.getSelectedItem());
         for (int i = 0; i < arrayTurma.size(); i++) {
             cmbTurma.addItem(arrayTurma.get(i).toString());
-        }
+        }*/
         //Carrega Instrutores
         for (int i = 0; i < arrayInstrutor.size(); i++) {
             cmbInstrutor.addItem(arrayInstrutor.get(i).getNome().toString());
@@ -253,7 +250,7 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
             btnLiberar.setEnabled(false);
         }
         else {
-            cmbInstrutor.setSelectedItem(instrutor.getNome());
+            cmbInstrutor.setSelectedItem(turma.getInstrutor().getNome());
             txtSituacao.setText("ALOCADA");
             btnAlocar.setEnabled(false);
             btnLiberar.setEnabled(true);
@@ -264,7 +261,7 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
         //TESTAR SE ISSO FUNCIONA!!!!
         //instrutorNome = (String) cmbInstrutor.getSelectedItem();
         turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
-        instrutor = arrayInstrutor.get(cmbInstrutor.getSelectedIndex());
+        Instrutor instrutor = arrayInstrutor.get(cmbInstrutor.getSelectedIndex());
         //instrutor = (Instrutor) cmbInstrutor.getSelectedItem();
         instrutor.addTurma(turma);
         System.out.println(turma.getNome());
@@ -273,7 +270,7 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
         System.out.println(turma.getInstrutor().getNome());
 
-        daoTurma.alocarInstrutor(instrutor.getCpf(), turma); //Armazenando a turma com o novo Instrutor no BD
+        daoTurma.alocarInstrutor(turma.getInstrutor().getCpf(), turma); //Armazenando a turma com o novo Instrutor no BD
 
         txtSituacao.setText("ALOCADA");
         btnAlocar.setEnabled(false);
@@ -282,20 +279,18 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
     private void cmbTurmaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseClicked
         turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
-        instrutor = turma.getInstrutor();
 
-        if (instrutor == null) {
+        if (turma.getInstrutor() == null) {
             System.out.println("Instrutor Nulo");
 
             txtSituacao.setText("TURMA SEM INSTRUTOR");
             btnAlocar.setEnabled(true);
             btnLiberar.setEnabled(false);
         }
-
-        if (instrutor != null) {
+        else {
             System.out.println("Instrutor NAAAAAAAAO Nulo");
 
-            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+            cmbInstrutor.setSelectedItem(turma.getInstrutor().getNome()); // colocar esse objeto na combo box de Instrutor
             txtSituacao.setText("ALOCADA");
             btnAlocar.setEnabled(false);
             btnLiberar.setEnabled(true);
@@ -304,9 +299,8 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
 
     private void cmbTurmaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbTurmaMouseEntered
         turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
-        instrutor = turma.getInstrutor();
 
-        if (instrutor == null) {
+        if (turma.getInstrutor() == null) {
             System.out.println("Instrutor Nulo");
 
             txtSituacao.setText("TURMA SEM INSTRUTOR");
@@ -314,12 +308,11 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
             btnLiberar.setEnabled(false);
 
         }
-
-        if (instrutor != null) {
+        else {
 
             System.out.println("Instrutor NAAAAAAAAO Nulo");
 
-            cmbInstrutor.setSelectedItem(instrutor.getNome()); // colocar esse objeto na combo box de Instrutor
+            cmbInstrutor.setSelectedItem(turma.getInstrutor().getNome()); // colocar esse objeto na combo box de Instrutor
 
             txtSituacao.setText("ALOCADA");
             btnAlocar.setEnabled(false);
@@ -378,8 +371,6 @@ public class Gui_AlocarInstrutor extends javax.swing.JFrame {
     private DaoCurso daoCurso = null;
     private DaoInstrutor daoInstrutor = null;
     private DaoTurma daoTurma = null;
-    private Curso curso = null;
     private Turma turma = null;
-    private Instrutor instrutor = null;
     private ArrayList<Instrutor> arrayInstrutor = null;
 }

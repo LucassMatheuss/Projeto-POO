@@ -22,7 +22,7 @@ public class DaoTurma {
     public void inserir (Turma turma){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO poo_Turma (siglaTurma, cpfInstrutor, siglaCurso, nome, "
+            ps = connection.prepareStatement("INSERT INTO POO_TURMA (siglaTurma, cpfInstrutor, siglaCurso, nome, "
                     + "dataInicio, dataTermino, periodo, qtdeVagas, observacoes) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, turma.getSiglaTurma());
@@ -60,7 +60,7 @@ public class DaoTurma {
     public void alocarInstrutor (String cpf , Turma turma){
     PreparedStatement ps = null;
     try {         
-            ps = connection.prepareStatement("UPDATE poo_Turma SET cpfInstrutor = ? WHERE siglaTurma = ?");
+            ps = connection.prepareStatement("UPDATE POO_TURMA SET cpfInstrutor = ? WHERE siglaTurma = ?");
             ps.setString(1, cpf);
             ps.setString(2, turma.getSiglaTurma()); 
             ps.execute();
@@ -72,7 +72,7 @@ public class DaoTurma {
     public void desalocarInstrutor (String cpf , Turma turma){
     PreparedStatement ps = null;
     try {        
-            ps = connection.prepareStatement("UPDATE poo_Turma SET cpfInstrutor = ? WHERE siglaTurma = ?");
+            ps = connection.prepareStatement("UPDATE POO_TURMA SET cpfInstrutor = ? WHERE siglaTurma = ?");
             ps.setString(1, null);
             ps.setString(2, turma.getSiglaTurma()); 
             ps.execute();
@@ -87,7 +87,7 @@ public class DaoTurma {
         Instrutor instrutor = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT * FROM poo_Turma WHERE siglaTurma = ?");
+            ps = connection.prepareStatement("SELECT * FROM POO_TURMA WHERE siglaTurma = ?");
             ps.setString(1, siglaTurma);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -111,7 +111,7 @@ public class DaoTurma {
     public void excluir (Turma turma){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("DELETE FROM poo_Turma WHERE siglaTurma = ?");
+            ps = connection.prepareStatement("DELETE FROM POO_TURMA WHERE siglaTurma = ?");
             ps.setString(1, turma.getSiglaTurma());
             ps.execute();
         } catch (SQLException ex) {
@@ -123,11 +123,11 @@ public class DaoTurma {
         ArrayList<String> Turmas = new ArrayList<>();
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT SiglaTurma FROM poo_Turma WHERE siglaCurso = ? ");
+            ps = connection.prepareStatement("SELECT SiglaTurma FROM POO_TURMA WHERE siglaCurso = ? ");
             ps.setString(1, curso);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                Turmas.add(rs.getString("SiglaTurma"));
+                Turmas.add(rs.getString("siglaTurma"));
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());

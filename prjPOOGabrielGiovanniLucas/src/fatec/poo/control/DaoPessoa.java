@@ -21,7 +21,7 @@ public class DaoPessoa {
     public void inserir (Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO poo_Pessoa (cpf, nome, dataNasc, endereco, numero, bairro, cidade, estado, " +
+            ps = connection.prepareStatement("INSERT INTO POO_PESSOA (cpf, nome, dataNasc, endereco, numero, bairro, cidade, estado, " +
                     "cep, telefone, celular, sexo, estadoCivil, rg, email) " +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, pessoa.getCpf());
@@ -48,7 +48,7 @@ public class DaoPessoa {
     public void alterar(Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("UPDATE poo_Pessoa SET nome = ?, dataNasc = ?, endereco = ?, numero = ?, bairro = ?, " +
+            ps = connection.prepareStatement("UPDATE POO_PESSOA SET nome = ?, dataNasc = ?, endereco = ?, numero = ?, bairro = ?, " +
                     "cidade = ?, estado = ?, cep = ?, telefone = ?, celular = ?, sexo = ?, estadoCivil = ?, rg = ?, " +
                     "email = ? WHERE cpf = ?"); 
             ps.setString(1, pessoa.getNome());
@@ -76,7 +76,7 @@ public class DaoPessoa {
         Pessoa pessoa = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT * FROM poo_Pessoa WHERE cpf = ?");
+            ps = connection.prepareStatement("SELECT * FROM POO_PESSOA WHERE cpf = ?");
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -107,7 +107,7 @@ public class DaoPessoa {
     public void excluir(Pessoa pessoa){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("DELETE FROM poo_Pessoa WHERE cpf = ?");
+            ps = connection.prepareStatement("DELETE FROM POO_PESSOA WHERE cpf = ?");
             ps.setString(1, pessoa.getCpf());
             ps.execute();
         } catch (SQLException ex) { 

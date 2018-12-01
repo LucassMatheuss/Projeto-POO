@@ -1,18 +1,21 @@
 package fatec.poo.model;
+
 import java.util.ArrayList;
+
 /**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
-public class Instrutor extends Pessoa{
+public class Instrutor extends Pessoa {
+
     private String formacao, areaAtuacao;
-    private ArrayList<Turma>turmas;
+    private ArrayList<Turma> turmas;
 
     public Instrutor(String nome, String cpf) {
         super(nome, cpf);
-        turmas = new ArrayList<Turma>(); 
+        turmas = new ArrayList<Turma>();
     }
-    
+
     public String getFormacao() {
         return formacao;
     }
@@ -28,16 +31,15 @@ public class Instrutor extends Pessoa{
     public void setAreaAtuacao(String areaAtuacao) {
         this.areaAtuacao = areaAtuacao;
     }
-    
-    public void addTurma(Turma t){
+
+    public void addTurma(Turma t) {
         turmas.add(t);
         t.setInstrutor(this);
     }
-    
-    
+
     //TESTAR SE ISSO FUNCIONA!!!
-    public void removeTurma (Turma t){
-    
+    public void removeTurma(Turma t) {
+
         turmas.remove(t);
     }
 }

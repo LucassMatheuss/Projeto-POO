@@ -236,10 +236,10 @@ public class Gui_Turma extends javax.swing.JFrame {
         daoTurma = new DaoTurma(conexao.conectar());
         daoCurso = new DaoCurso(conexao.conectar());
 
-        ArrayList<String> array = daoCurso.listar();
+        ArrayList<Curso> array = daoCurso.listar();
 
         for (int i = 0; i < array.size(); i++) {
-            cmbCurso.addItem(array.get(i).toString());
+            cmbCurso.addItem(array.get(i).getSigla());
         }
     }//GEN-LAST:event_formWindowOpened
 

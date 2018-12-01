@@ -1,11 +1,13 @@
 package fatec.poo.model;
+
 /**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
 public class Pessoa {
-    private String nome, dataNasc, endereco, bairro, 
-            cidade, estado, cep, telefone, celular, 
+
+    private String nome, dataNasc, endereco, bairro,
+            cidade, estado, cep, telefone, celular,
             sexo, estadoCivil, rg, cpf, email;
     private int numero;
     private static final int[] pesoCPF = {11, 10, 9, 8, 7, 6, 5, 4, 3, 2};
@@ -133,7 +135,7 @@ public class Pessoa {
 
     public void setNumero(int numero) {
         this.numero = numero;
-    }  
+    }
 
     private static int calcularDigito(String str, int[] peso) {
         int soma = 0;
@@ -154,5 +156,5 @@ public class Pessoa {
         Integer digito2 = calcularDigito(cpf.substring(0, 9) + digito1, pesoCPF);
         return cpf.equals(cpf.substring(0, 9) + digito1.toString() + digito2.toString());
     }
-    
+
 }

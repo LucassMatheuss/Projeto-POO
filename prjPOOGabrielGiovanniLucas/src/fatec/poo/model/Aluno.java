@@ -1,9 +1,11 @@
 package fatec.poo.model;
-/** 
+
+/**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
  */
-public class Aluno extends Pessoa{
+public class Aluno extends Pessoa {
+
     private String escolaridade;
     private Matricula matricula;
 
@@ -18,7 +20,7 @@ public class Aluno extends Pessoa{
     public void setEscolaridade(String escolaridade) {
         this.escolaridade = escolaridade;
     }
-    
+
     public Matricula getMatricula() {
         return matricula;
     }

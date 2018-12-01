@@ -24,7 +24,7 @@ public class DaoInstrutor {
         PreparedStatement ps = null;
         try {
             dp.inserir((Pessoa)Instrutor);
-            ps = connection.prepareStatement("INSERT INTO poo_Instrutor (cpfInstrutor, formacao, areaAtuacao) " +
+            ps = connection.prepareStatement("INSERT INTO POO_INSTRUTOR (cpfInstrutor, formacao, areaAtuacao) " +
                     "VALUES(?, ?, ?)");
             ps.setString(1, Instrutor.getCpf());
             ps.setString(2, Instrutor.getFormacao());
@@ -39,7 +39,7 @@ public class DaoInstrutor {
         PreparedStatement ps = null;
         try {
             dp.alterar(Instrutor);
-            ps = connection.prepareStatement("UPDATE poo_Instrutor SET formacao = ?, areaAtuacao = ? WHERE cpfInstrutor = ?"); 
+            ps = connection.prepareStatement("UPDATE POO_INSTRUTOR SET formacao = ?, areaAtuacao = ? WHERE cpfInstrutor = ?"); 
             ps.setString(1, Instrutor.getFormacao());
             ps.setString(2, Instrutor.getAreaAtuacao());
             ps.setString(3, Instrutor.getCpf());
@@ -54,7 +54,7 @@ public class DaoInstrutor {
         PreparedStatement ps = null;
         try {
             Instrutor = (Instrutor)dp.consultar(cpf, "Instrutor");
-            ps = connection.prepareStatement("SELECT * FROM poo_Instrutor WHERE cpfInstrutor = ?");
+            ps = connection.prepareStatement("SELECT * FROM POO_INSTRUTOR WHERE cpfInstrutor = ?");
             ps.setString(1, cpf);
             ResultSet rs = ps.executeQuery();
             if (rs.next()){
@@ -70,7 +70,7 @@ public class DaoInstrutor {
     public void excluir(Instrutor Instrutor) {
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("DELETE FROM poo_Instrutor WHERE cpfInstrutor = ?");
+            ps = connection.prepareStatement("DELETE FROM POO_INSTRUTOR WHERE cpfInstrutor = ?");
             ps.setString(1, Instrutor.getCpf());
             ps.execute();
             dp.excluir(Instrutor);
@@ -83,12 +83,11 @@ public class DaoInstrutor {
         ArrayList<Instrutor> instrutores = new ArrayList<>();
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("SELECT nome, poo_Instrutor.cpfInstrutor FROM poo_Pessoa, "
-                    + "poo_Instrutor where poo_Pessoa.cpf = poo_Instrutor.cpfInstrutor");
+            ps = connection.prepareStatement("SELECT nome, POO_INSTRUTOR.cpfInstrutor FROM POO_PESSOA, "
+                    + "POO_INSTRUTOR WHERE POO_PESSOA.cpf = POO_INSTRUTOR.cpfInstrutor");
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 instrutores.add(new Instrutor (rs.getString("nome"),rs.getString("cpfInstrutor")));
-               
             }
         } catch (SQLException ex) {
             System.out.println(ex.toString());
