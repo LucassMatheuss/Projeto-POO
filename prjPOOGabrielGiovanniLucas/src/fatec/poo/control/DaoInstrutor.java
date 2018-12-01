@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import fatec.poo.model.Instrutor;
 import fatec.poo.model.Pessoa;
+import java.util.ArrayList;
 /**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
@@ -80,4 +81,24 @@ public class DaoInstrutor {
             System.out.println(ex.toString());   
         }
     }
+    //PARTE NOVA TRAB 4
+    
+    public ArrayList<Instrutor> listar () {
+        ArrayList<Instrutor> instrutores = new ArrayList<>();
+        PreparedStatement ps = null;
+        try {//Verificar se funciona essa Query para listar o nome do Instrutor)
+            ps = connection.prepareStatement("SELECT nome, poo_Instrutor.CPF FROM poo_Pessoa,poo_Instrutor where poo_Pessoa.CPF = poo_Instrutor.CPF");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                instrutores.add(new Instrutor (rs.getString("nome"),rs.getString("CPF")));
+               
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+        }
+        return instrutores;
+    }
+    
+    
+    
 }
