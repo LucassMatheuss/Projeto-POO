@@ -230,6 +230,7 @@ public class Gui_Turma extends javax.swing.JFrame {
 
         //conexao = new Conexao("BD1711015", "BD1711015");
         conexao = new Conexao("ZickkyG", "Gigio2025");
+        conexao = new Conexao("LucasM", "familiacorrea");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
         conexao.setConnectionString("jdbc:oracle:thin:@127.0.0.1:1521:xe");

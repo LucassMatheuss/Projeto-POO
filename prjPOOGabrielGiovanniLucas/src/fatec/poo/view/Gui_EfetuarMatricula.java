@@ -1,5 +1,26 @@
 package fatec.poo.view;
 
+import fatec.poo.control.Conexao;
+import fatec.poo.control.DaoAPrazo;
+import fatec.poo.control.DaoAVista;
+import fatec.poo.control.DaoAluno;
+import fatec.poo.control.DaoCurso;
+import fatec.poo.control.DaoInstrutor;
+import fatec.poo.control.DaoMatricula;
+import fatec.poo.control.DaoTurma;
+import fatec.poo.model.APrazo;
+import fatec.poo.model.AVista;
+import fatec.poo.model.Aluno;
+import fatec.poo.model.Curso;
+import fatec.poo.model.Instrutor;
+import fatec.poo.model.Matricula;
+import fatec.poo.model.Pessoa;
+import fatec.poo.model.Turma;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel Pillan, Giovanni Garcia, Lucas Matheus
@@ -51,13 +72,18 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         ftxtDataVencimento = new javax.swing.JFormattedTextField();
         btnConsultar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnInserir = new javax.swing.JButton();
         btnAlterar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Efetuar Matricula");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jLabel1.setText("Data da Matricula");
 
@@ -82,17 +108,27 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jftxtCPF.setEnabled(false);
 
         txtValor.setEditable(false);
         txtValor.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        txtValor.setEnabled(false);
 
         txtNome.setEditable(false);
         txtNome.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        txtNome.setEnabled(false);
+
+        cmbCurso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCursoActionPerformed(evt);
+            }
+        });
 
         pnlPagamento.setBorder(javax.swing.BorderFactory.createTitledBorder("Pagamento"));
 
         buttonGroup1.add(rbAvista);
         rbAvista.setText("A Vista");
+        rbAvista.setEnabled(false);
         rbAvista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbAvistaActionPerformed(evt);
@@ -101,6 +137,7 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
 
         buttonGroup1.add(rbAprazo);
         rbAprazo.setText("A Prazo");
+        rbAprazo.setEnabled(false);
         rbAprazo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbAprazoActionPerformed(evt);
@@ -210,15 +247,38 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
 
         btnConsultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/pesq.png"))); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
-        jButton2.setText("Inserir");
+        btnInserir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/add.png"))); // NOI18N
+        btnInserir.setText("Inserir");
+        btnInserir.setEnabled(false);
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Alterar.png"))); // NOI18N
         btnAlterar.setText("Alterar");
+        btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/Eraser.png"))); // NOI18N
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fatec/poo/view/icon/exit.png"))); // NOI18N
         btnSair.setText("Sair");
@@ -238,7 +298,7 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
                         .addContainerGap(149, Short.MAX_VALUE)
                         .addComponent(btnConsultar)
                         .addGap(30, 30, 30)
-                        .addComponent(jButton2)
+                        .addComponent(btnInserir)
                         .addGap(27, 27, 27)
                         .addComponent(btnAlterar)
                         .addGap(28, 28, 28)
@@ -254,7 +314,7 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel1)
                                         .addGap(27, 27, 27)
-                                        .addComponent(jftxtDataMatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
+                                        .addComponent(jftxtDataMatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel4)
@@ -277,7 +337,7 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
                 .addGap(46, 46, 46))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAlterar, btnConsultar, btnExcluir, btnSair, jButton2});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAlterar, btnConsultar, btnExcluir, btnInserir, btnSair});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,7 +374,7 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConsultar)
-                    .addComponent(jButton2)
+                    .addComponent(btnInserir)
                     .addComponent(btnAlterar)
                     .addComponent(btnExcluir)
                     .addComponent(btnSair))
@@ -345,6 +405,211 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
         txtTaxaJuros.setEnabled(true);
         ftxtDataVencimento.setEnabled(true);
     }//GEN-LAST:event_rbAprazoActionPerformed
+
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        String cpf = jftxtCPF.getText().replace(".", "").replace("-", "");
+        cpf = cpf.replaceAll("\\D", "");
+        if (!Pessoa.validarCPF(cpf)) {
+            try {
+                throw new Exception("CPF é inválido!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else { //é válido
+            aluno = null;
+            matricula = null;
+            matricula = daoMatricula.consultar(jftxtCPF.getText().replace(".", "").replace("-", ""));
+            if (matricula == null) {
+                aluno = daoAluno.consultar(jftxtCPF.getText().replace(".", "").replace("-", ""));
+                txtNome.setText(aluno.getNome());
+            }else{
+                jftxtDataMatricula.setText(matricula.getData());
+                //arrayCursos.indexOf(matricula)
+                //txtValor.setText(matricula.get);
+                //cmbTurma.setText(matricula.getTurma());
+                
+            }
+
+        }
+
+        if (aluno == null) {
+            btnConsultar.setEnabled(false);
+            btnInserir.setEnabled(true);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+
+        txtNome.setEnabled(true);
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void cmbCursoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCursoActionPerformed
+        ArrayList<String> arrayTurma = daoTurma.listar((String) cmbCurso.getSelectedItem()); // Lista a Turma baseada no Curso Escolhido
+        cmbTurma.removeAllItems();
+        for (int i = 0; i < arrayTurma.size(); i++) {
+            cmbTurma.addItem(arrayTurma.get(i));
+        }
+        turma = daoTurma.consultar((String) cmbTurma.getSelectedItem());
+
+        jftxtCPF.setEnabled(true);
+        rbAvista.setEnabled(true);
+        rbAprazo.setEnabled(true);
+    }//GEN-LAST:event_cmbCursoActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        conexao = new Conexao("LucasM", "familiacorrea");
+        //conexao = new Conexao("BD1711015", "BD1711015");
+        //conexao = new Conexao("ZickkyG", "Gigio2025");
+        conexao.setDriver("oracle.jdbc.driver.OracleDriver");
+        //conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
+        conexao.setConnectionString("jdbc:oracle:thin:@127.0.0.1:1521:xe");
+        daoCurso = new DaoCurso(conexao.conectar());
+        daoTurma = new DaoTurma(conexao.conectar());
+        daoAVista = new DaoAVista(conexao.conectar());
+        daoAPrazo = new DaoAPrazo(conexao.conectar());
+        daoAluno = new DaoAluno(conexao.conectar());
+
+        arrayCursos = daoCurso.listar();
+        for (int i = 0; i < arrayCursos.size(); i++) {
+            cmbCurso.addItem(arrayCursos.get(i).getSigla());
+        }
+
+        txtValor.setText(Double.toString(arrayCursos.get(cmbCurso.getSelectedIndex()).getValor()));
+
+        ArrayList<String> arrayTurma = daoTurma.listar((String) cmbCurso.getSelectedItem());
+        for (int i = 0; i < arrayTurma.size(); i++) {
+            cmbTurma.addItem(arrayTurma.get(i));
+        }
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
+            //daoMatricula.excluir(matricula);
+            //daoAVista.excluir(Avista);
+            //daoAPrazo.excluir(Aprazo);   
+
+            jftxtDataMatricula.setText("");
+            txtValor.setText("");
+            jftxtCPF.setText("");
+            txtNome.setText("");
+            txtAgencia.setText("");
+            txtCheque.setText("");
+            ftxtDataPagamento.setText("");
+            txtMensalidade.setText("");
+            txtTaxaJuros.setText("");
+            ftxtDataVencimento.setText("");
+
+            jftxtDataMatricula.setEnabled(true);
+            cmbCurso.setEnabled(true);
+            cmbTurma.setEnabled(true);
+            jftxtCPF.setEnabled(false);
+            txtNome.setEnabled(false);
+            txtAgencia.setEnabled(false);
+            txtCheque.setEnabled(false);
+            ftxtDataPagamento.setEnabled(false);
+            txtMensalidade.setEnabled(false);
+            txtTaxaJuros.setEnabled(false);
+            ftxtDataVencimento.setEnabled(false);
+
+            btnConsultar.setEnabled(true);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "Confirma Alteração?") == 0) {
+
+            matricula.setData(jftxtDataMatricula.getText());
+            Avista.setValor(Double.valueOf(txtValor.getText()));
+            Avista.setAgencia(Integer.valueOf(txtAgencia.getText()));
+            Avista.setNcheque(Integer.valueOf(txtCheque.getText()));
+            Avista.setPreData(ftxtDataPagamento.getText());
+            Aprazo.setDtVencimento(ftxtDataVencimento.getText());
+            Aprazo.setQtdeMensalidade(Integer.valueOf(txtMensalidade.getText()));
+            Aprazo.setTaxaJuros(Double.valueOf(txtTaxaJuros.getText()));
+            Aprazo.setValor(Double.valueOf(txtValor.getText()));
+
+            jftxtDataMatricula.setText("");
+            txtValor.setText("");
+            jftxtCPF.setText("");
+            txtNome.setText("");
+            txtAgencia.setText("");
+            txtCheque.setText("");
+            ftxtDataPagamento.setText("");
+            txtMensalidade.setText("");
+            txtTaxaJuros.setText("");
+            ftxtDataVencimento.setText("");
+
+            jftxtDataMatricula.setEnabled(true);
+            cmbCurso.setEnabled(true);
+            cmbTurma.setEnabled(true);
+            jftxtCPF.setEnabled(false);
+            txtNome.setEnabled(false);
+            txtAgencia.setEnabled(false);
+            txtCheque.setEnabled(false);
+            ftxtDataPagamento.setEnabled(false);
+            txtMensalidade.setEnabled(false);
+            txtTaxaJuros.setEnabled(false);
+            ftxtDataVencimento.setEnabled(false);
+
+            btnConsultar.setEnabled(true);
+            btnInserir.setEnabled(false);
+            btnAlterar.setEnabled(false);
+            btnExcluir.setEnabled(false);
+
+            daoMatricula.alterar(matricula);
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
+        Avista = new AVista(daoAVista.getProxCod());
+        Aprazo = new APrazo(daoAPrazo.getProxCod());
+        matricula = new Matricula(jftxtDataMatricula.getText());
+
+        matricula.setData(jftxtDataMatricula.getText());
+        Avista.setValor(Double.valueOf(txtValor.getText()));
+        Avista.setAgencia(Integer.valueOf(txtAgencia.getText()));
+        Avista.setNcheque(Integer.valueOf(txtCheque.getText()));
+        Avista.setPreData(ftxtDataPagamento.getText());
+        Aprazo.setDtVencimento(ftxtDataVencimento.getText());
+        Aprazo.setQtdeMensalidade(Integer.valueOf(txtMensalidade.getText()));
+        Aprazo.setTaxaJuros(Double.valueOf(txtTaxaJuros.getText()));
+        Aprazo.setValor(Double.valueOf(txtValor.getText()));
+
+        daoMatricula.inserir(matricula);
+        daoAPrazo.inserir(Aprazo);
+        daoAVista.inserir(Avista);
+
+        jftxtDataMatricula.setText("");
+        txtValor.setText("");
+        jftxtCPF.setText("");
+        txtNome.setText("");
+        txtAgencia.setText("");
+        txtCheque.setText("");
+        ftxtDataPagamento.setText("");
+        txtMensalidade.setText("");
+        txtTaxaJuros.setText("");
+        ftxtDataVencimento.setText("");
+
+        btnInserir.setEnabled(false);
+
+        jftxtDataMatricula.setEnabled(true);
+        cmbCurso.setEnabled(true);
+        cmbTurma.setEnabled(true);
+        jftxtCPF.setEnabled(false);
+        txtNome.setEnabled(false);
+        txtAgencia.setEnabled(false);
+        txtCheque.setEnabled(false);
+        ftxtDataPagamento.setEnabled(false);
+        txtMensalidade.setEnabled(false);
+        txtTaxaJuros.setEnabled(false);
+        ftxtDataVencimento.setEnabled(false);
+
+        btnConsultar.setEnabled(true);
+
+
+    }//GEN-LAST:event_btnInserirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,13 +650,13 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnInserir;
     private javax.swing.JButton btnSair;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cmbCurso;
     private javax.swing.JComboBox<String> cmbTurma;
     private javax.swing.JFormattedTextField ftxtDataPagamento;
     private javax.swing.JFormattedTextField ftxtDataVencimento;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -416,4 +681,19 @@ public class Gui_EfetuarMatricula extends javax.swing.JFrame {
     private javax.swing.JTextField txtTaxaJuros;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
+private Conexao conexao = null;
+    private DaoCurso daoCurso = null;
+    private DaoInstrutor daoInstrutor = null;
+    private DaoTurma daoTurma = null;
+    private AVista Avista = null;
+    private APrazo Aprazo = null;
+    private Aluno aluno = null;
+    private Matricula matricula = null;
+    private DaoMatricula daoMatricula = null;
+    private DaoAluno daoAluno = null;
+    private DaoAVista daoAVista = null;
+    private DaoAPrazo daoAPrazo = null;
+    private Curso curso = null;
+    private Turma turma = null;
+    private ArrayList<Curso> arrayCursos;
 }

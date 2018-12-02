@@ -62,7 +62,7 @@ public class DaoMatricula {
         }
     }
     
-    public void consultar (String cpfAluno){
+    public Matricula consultar (String cpfAluno){
         PreparedStatement ps = null;
         Matricula matricula = null;
         try {
@@ -83,5 +83,6 @@ public class DaoMatricula {
         } catch (SQLException ex) {
             System.out.println(ex.toString());
         }
+        return matricula;
     }
 }
